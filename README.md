@@ -1,3 +1,5 @@
+#LemonSync
+
 **LemonSync** will listen for changes in the folder you configure, and automatically push updates to your store theme. This is helpful if you want to add your theme under version control, or prefer to work locally rather than in the LemonStand UI.
 
 #Installation
