@@ -1,4 +1,4 @@
-When running, `LemonSync` will listen for changes in the folder you configure, and automatically push updates to your s3 store. This is helpful if you want to add your theme under local version control, or prefer to work in locally rather than in the LemonStand UI.
+**LemonSync** will listen for changes in the folder you configure, and automatically push updates to your store theme. This is helpful if you want to add your theme under version control, or prefer to work locally rather than in the LemonStand UI.
 
 #Installation
 
@@ -24,7 +24,7 @@ You need to set the directory that will watch for changes.
 
 ##Usage
 
-Once you have cloned this repo onto your machine, you can simply run `python LemonSync.py` from your command line. To stop the program type `Ctrl-C`.
+Once you have cloned this repository onto your machine, you can simply run `python LemonSync.py` from your command line. To stop the program type `Ctrl-C`.
 
 ## TODO
 - When the application starts up, check if the s3 folder is different. If it is, ask the user if they want to upload their local files to s3, or pull s3 to their local files.  
