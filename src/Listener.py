@@ -14,7 +14,7 @@ class Listener(FileSystemEventHandler):
 	
 	def __init__(self):
 		self.conn = boto.s3.connection.S3Connection(aws_access_key_id=config.aws_access_key, aws_secret_access_key=config.aws_secret_key) 
-		self.bucket = self.conn.get_bucket(config.bucket)
+		self.bucket = self.conn.get_bucket(config.bucket, validate = False)
 
 	def __getKey(self, event_path):
 		# the store name hash should be retireved from the rest API
