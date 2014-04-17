@@ -39,7 +39,7 @@ By default, LemonStand caches all CMS objects (pages, partials, etc.). In order 
 1. Log into your store as the administrator.
 2. Navigate to `/backend/cms/settings` and select **Disable CMS cache for backend users**. 
 
-With this enabled, the cache will be skipped when a user is logged in to the backend, allowing you to always see the current versions of pages.
+With this enabled, the cache will be skipped when a user is logged in to the backend, allowing you to always see the current versions of pages. **Note:** Caching will remain disabled only while the administrator is logged in. Once logged out, caching will resume regardless of whether or not the CMS cache has been disabled.
 
 ###Pages
 
