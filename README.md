@@ -32,6 +32,15 @@ Once you have cloned this repository onto your machine, you can simply run `pyth
 
 To get started using LemonSync, you should download the theme you will be editing from your LemonStand store. This can be down through the backend export option found at `/backend/cms/theme`. Once you have your theme unzipped on your local machine, you can set the full path to the theme folder as your `watch` directory. 
 
+###Caching
+
+By default, LemonStand caches all CMS objects (pages, partials, etc.). In order to use LemonSync, you will want to temporarily, disable caching.
+
+1. Log into your store as the administrator.
+2. Navigate to `/backend/cms/settings` and select **Disable CMS cache for backend users**. 
+
+With this enabled, the cache will be skipped when a user is logged in to the backend, allowing you to always see the current versions of pages.
+
 ###Pages
 
 Any new pages that you add need to be registered with LemonStand. As of now, this means logging into your stores `backend` and adding the page manually. This is where you set the `url` and other options such as `title` to the page.
