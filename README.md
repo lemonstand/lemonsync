@@ -34,7 +34,7 @@ To get started using LemonSync, you should download the theme you will be editin
 
 ###Caching
 
-By default, LemonStand caches all CMS objects (pages, partials, etc.). In order to use LemonSync, you will want to temporarily, disable caching.
+By default, LemonStand caches all CMS objects (pages, partials, etc.). In order to use LemonSync, you will want to temporarily disable caching.
 
 1. Log into your store as the administrator.
 2. Navigate to `/backend/cms/settings` and select **Disable CMS cache for backend users**. 
