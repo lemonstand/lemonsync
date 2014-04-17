@@ -28,6 +28,10 @@ You need to set the directory that will watch for changes.
 
 Once you have cloned this repository onto your machine, you can simply run `python LemonSync.py` from your command line. To stop the program type `Ctrl-C`.
 
+##Getting Started
+
+To get started using LemonSync, you should download the theme you will be editing from your LemonStand store. This can be down through the backend export option found at `/backend/cms/theme`. Once you have your theme unzipped on your local machine, you can set the full path to the theme folder as your `watch` directory. 
+
 ###Pages
 
 Any new pages that you add need to be registered with LemonStand. As of now, this means logging into your stores `backend` and adding the page manually. This is where you set the `url` and other options such as `title` to the page.
