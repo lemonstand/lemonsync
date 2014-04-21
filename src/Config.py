@@ -1,6 +1,6 @@
 from ConfigParser import SafeConfigParser
 
-sections = 'aws', 'dir', 'store'
+sections = 'api', 'dir', 'store'
 
 class Config (object):
 

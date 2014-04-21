@@ -9,21 +9,28 @@ from boto.s3.key import Key
 from watchdog.events import FileSystemEventHandler
 from boto.s3.key import Key
 from Config import config
+from Connector import Connector
 
 class Listener(FileSystemEventHandler):
 	
 	def __init__(self):
-		self.conn = boto.s3.connection.S3Connection(aws_access_key_id=config.aws_access_key, aws_secret_access_key=config.aws_secret_key) 
-		self.bucket = self.conn.get_bucket(config.bucket, validate = False)
+		# Get the s3 credentials for a federated user from the LemonStand2 API
+		credentials = Connector()
+		identity = credentials.getIdentity(config.api_host, config.store_host, config.api_access)
+
+		self.conn = boto.s3.connection.S3Connection(aws_access_key_id=identity['key'], aws_secret_access_key=identity['secret'], security_token=identity['token']) 
+		self.bucket = self.conn.get_bucket(identity['bucket'], validate = False)
+		self.store = identity['store']
+		self.theme = identity['theme']
+		self.watch = config.watch_dir
+
+		print '\033[92m' + 'LemonSync is listening to changes on ' + config.watch_dir
 
 	def __getKey(self, event_path):
-		# the store name hash should be retireved from the rest API
-		store = config.name
-		theme = config.theme
 		# strip out the watch dir, from the modified path to get the relative folder in S3
-		path = event_path.replace(config.watch,'')
+		path = event_path.replace(self.watch, '')
 		# this will create the full s3 key
-		key = os.path.join(store, "themes", theme, path)
+		key = os.path.join(self.store, "themes", self.theme, path)
 
 		return key
 
@@ -34,7 +41,7 @@ class Listener(FileSystemEventHandler):
 			self.bucket.delete_key(key)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully removed ' + key + ''
 		except:
-			print '\033[91m' + 'Failed to remove ' + key + ''
+			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
 
 	def upsert(self, event_path):
 		key = self.__getKey(event_path)
@@ -44,7 +51,7 @@ class Listener(FileSystemEventHandler):
 			k.set_contents_from_filename(event_path)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully uploaded ' + key + ''
 		except:
-			print '\033[91m' + 'Failed to upload ' + key + ''
+			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
 
 
 	def on_modified(self, event):
