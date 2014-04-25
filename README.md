@@ -43,8 +43,17 @@ With this enabled, the cache will be skipped when a user is logged in to the bac
 
 ###Pages
 
-Any new pages that you add need to be registered with LemonStand. As of now, this means logging into your stores `backend` and adding the page manually. This is where you set the `url` and other options such as `title` to the page.
+Any new pages that you add are automatically registered with LemonStand when uploaded. You can set properties on the page such as the `url` and `title`.
 
+```
+---
+template: inner
+protocol: all
+published: true
+name: About
+url: /about
+---
+```
 
 ## TODO
 - Automatically register new pages, resources, etc.
