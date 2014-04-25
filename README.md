@@ -43,11 +43,20 @@ With this enabled, the cache will be skipped when a user is logged in to the bac
 
 ###Pages
 
-Any new pages that you add need to be registered with LemonStand. As of now, this means logging into your stores `backend` and adding the page manually. This is where you set the `url` and other options such as `title` to the page.
+Any new pages that you add are automatically registered with LemonStand when uploaded. You can set properties on the page such as the `url` and `name` of the page, by adding a header to the top of the page. See below for an example.
 
+```
+---
+template: inner
+protocol: all
+published: true
+name: About
+url: /about
+---
+```
 
 ## TODO
-- Automatically register new pages, resources, etc.
+- ~~Automatically register new pages, resources, etc.~~
 - When the application starts up, check if the s3 folder is different. If it is, ask the user if they want to upload their local files to s3, or pull s3 to their local files.  
 - API access to LemonStand2 for token access, AWS user credentials, store hash name, etc.
 - Bundle as a `pip` package or use `pyinstaller` to create a cross platform executable.
