@@ -6,9 +6,9 @@
 
 You must have python 2.7.x or higher for `LemonSync` to work. Also, please make sure you have the needed libraries installed. If you have `pip` already installed on your system you can run the following commands to install them.
 
-`sudo pip install watchdog`  
-`sudo pip install boto`
-`sudo pip install requests`
+`sudo pip install watchdog`    
+`sudo pip install boto`  
+`sudo pip install requests`  
 
 If you do not have pip installed, you can also install those libraries using `easy_install`. 
 
