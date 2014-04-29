@@ -8,25 +8,22 @@ You must have python 2.7.x or higher for `LemonSync` to work. Also, please make 
 
 `sudo pip install watchdog`  
 `sudo pip install boto`
+`sudo pip install requests`
 
 If you do not have pip installed, you can also install those libraries using `easy_install`. 
 
 ##Configuration
 
-You need to set your configuration values, which are located in `config.cfg`. The settings below will be provided to you by LemonStand technical support.
+You need to set your configuration values, which are located in `config.cfg`. In order to obtain your `api_key` and `api_access` token you will need to login to your stores backend, and under the `Settings` tab is a section named `API` where you can generate a private API key for LemonSync.
 
-- `aws_access_key`
-- `aws_secret_key`
-- `bucket`
-- `name` 
-- `theme`
-
-You need to set the directory that will watch for changes.
-- `watch` Remember to add a trailing slash.
+- `api_key`
+- `api_access`
+- `watch_dir`
+- `store_host` 
 
 ##Usage
 
-Once you have cloned this repository onto your machine, you can simply run `python LemonSync.py` from your command line. To stop the program type `Ctrl-C`.
+Once you have cloned this repository onto your machine, you can simply run `python LemonSync` from your command line. To stop the program type `Ctrl-C`.
 
 ##Getting Started
 
@@ -43,7 +40,7 @@ With this enabled, the cache will be skipped when a user is logged in to the bac
 
 ###Pages
 
-Any new pages that you add are automatically registered with LemonStand when uploaded. You can set properties on the page such as the `url` and `title`.
+Any new pages that you add are automatically registered with LemonStand when uploaded. You can set properties on the page such as the `url` and `name` of the page, by adding a header to the top of the page. See below for an example.
 
 ```
 ---
@@ -56,7 +53,7 @@ url: /about
 ```
 
 ## TODO
-- Automatically register new pages, resources, etc.
+- ~~Automatically register new pages, resources, etc.~~
 - When the application starts up, check if the s3 folder is different. If it is, ask the user if they want to upload their local files to s3, or pull s3 to their local files.  
 - API access to LemonStand2 for token access, AWS user credentials, store hash name, etc.
 - Bundle as a `pip` package or use `pyinstaller` to create a cross platform executable.

@@ -9,8 +9,9 @@ from src import Listener
 from src.Config import config
 
 def main(): 
+	print '\033[93m' + 'LemonSync is initiating connection...'
 	observer = Observer()
-	observer.schedule(Listener(), config.watch, recursive=True)
+	observer.schedule(Listener(), config.watch_dir, recursive=True)
 	observer.start()
 
 	try:
