@@ -8,7 +8,7 @@ class Connector:
 	# Need an AWS key, ID, and access token to talk to S3
 	def getIdentity(self, api_host, store_host, api_access):
 
-		path = '/v2/s3/identity'
+		path = '/v2/identity/s3'
 		headers = { 
 			'content-type': 'application/json',
 			'x-store-host': store_host, 
