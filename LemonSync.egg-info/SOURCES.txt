@@ -1,0 +1,12 @@
+.gitignore
+MANIFEST.in
+README
+config.cfg
+setup.py
+LemonSync/__init__.py
+LemonSync.egg-info/PKG-INFO
+LemonSync.egg-info/SOURCES.txt
+LemonSync.egg-info/dependency_links.txt
+LemonSync.egg-info/requires.txt
+LemonSync.egg-info/top_level.txt
+bin/LemonSync

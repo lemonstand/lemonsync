@@ -1,0 +1,4 @@
+include README.md
+include config.cfg
+include .gitignore
+recursive-include tests *.py *.txt

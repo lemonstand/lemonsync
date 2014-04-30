@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: LemonSync
+Version: 0.1.0
+Summary: LemonSync will listen for changes in the folder you configure, and automatically push updates to your store theme.
+Home-page: UNKNOWN
+Author: LemonStand
+Author-email: chris@lemonstand.com
+License: LICENSE
+Description: UNKNOWN
+Platform: UNKNOWN
