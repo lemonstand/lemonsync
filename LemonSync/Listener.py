@@ -1,7 +1,6 @@
 import sys 
 import time
 import os 
-import ConfigParser
 import boto.s3 
 import boto.s3.connection 
 

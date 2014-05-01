@@ -3,12 +3,16 @@
 import sys 
 import time
 import os 
+import getopt
 
+from Listener import Listener
+from ConfigParser import SafeConfigParser
 from watchdog.observers import Observer
-from src import Listener
-from src.Config import config
+from Config import config
 
 def main(): 
+
+	# Start 
 	print '\033[93m' + 'LemonSync is initiating connection...'
 	observer = Observer()
 	observer.schedule(Listener(), config.watch_dir, recursive=True)

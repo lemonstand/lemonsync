@@ -1,3 +1,10 @@
 *.pyc
+.*.swp
+*.log
+*~
 __pycache__
-/sample
+LemonSync.egg-info
+MANIFEST.in
+.DS_Store
+venv
+dist/
