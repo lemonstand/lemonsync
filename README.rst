@@ -1,6 +1,15 @@
 LemonSync
 =========
 
+lemonsync 0.1.5
+
+Released: 1-May-2014
+
+.. image:: https://pypip.in/download/LemonSync/badge.png
+    :target: https://pypi.python.org/pypi//LemonSync/
+    :alt: Downloads
+
+
 **LemonSync** will listen for changes in the folder you configure, and
 automatically push updates to your store theme. This is helpful if you
 want to add your theme under version control, or prefer to work locally
@@ -9,38 +18,56 @@ rather than in the LemonStand UI.
 Installation
 ------------
 
-You must have python 2.7.x or higher for ``LemonSync`` to work. Also,
-please make sure you have the needed libraries installed. If you have
-``pip`` already installed on your system you can run the following
-commands to install them.
+You must have python 2.7.x or higher for ``LemonSync`` to work. If you 
+have `pip`_ already installed on your system you can run the following
+command to install `LemonSync`:
 
-``sudo pip install watchdog``
-``sudo pip install boto``
-``sudo pip install requests``
+::
 
-If you do not have pip installed, you can also install those libraries
-using ``easy_install``.
+    $ pip install lemonsync   
+
+If you do not have pip installed, you can download it from `source`_:  
+
+::
+
+    $ git clone git://github.com/lemonstand/LemonSync.git
+    $ cd LemonSync
+    $ python setup.py install   
 
 Configuration
 -------------
 
-You need to set your configuration values, which are located in
-``config.cfg``. In order to obtain your ``api_key`` and ``api_access``
-token you will need to login to your stores backend, and under the
-``Settings`` tab is a section named ``API`` where you can generate a
-private API key for LemonSync.
+You need to create a configuration file, which can be named anything you
+like, for example ``config.cfg``. See below for an example which can
+be copied. Just be sure to change the values ``api_key``, ``api_access``, 
+``watch_dir`` and ``store_host``. In order to obtain your ``api_key`` 
+and ``api_access`` token, you will need to login to your store backend, 
+and under the ``Settings`` tab is a section named ``API``, where you can 
+generate a private API key for ``LemonSync``.
 
--  ``api_key``
--  ``api_access``
--  ``watch_dir``
--  ``store_host``
+::
+
+    [api]
+    api_host = https://api.lemonstand.com
+    api_key = YOUR_API_KEY
+    api_access = YOUR_API_TOKEN
+
+    [dir]
+    watch_dir = /path/to/your/local/theme/
+
+    [store]
+    store_host = YOUR_STORE.lemonstand.com  
+
 
 Usage
 -----
 
-Once you have cloned this repository onto your machine, you can simply
-run ``python LemonSync`` from your command line. To stop the program
-type ``Ctrl-C``.
+Once installed, you can run ``lemonsync`` from the command line. 
+To stop the program type ``Ctrl-C``.
+
+::
+
+    $ lemonsync --config=path/to/your/config.cfg   
 
 Getting Started
 ---------------
@@ -49,7 +76,7 @@ To get started using LemonSync, you should download the theme you will
 be editing from your LemonStand store. This can be down through the
 backend export option found at ``/backend/cms/theme``. Once you have
 your theme unzipped on your local machine, you can set the full path to
-the theme folder as your ``watch`` directory.
+the theme folder as your ``watch_dir`` directory in your configuration.
 
 Caching
 ~~~~~~~
@@ -88,13 +115,10 @@ below for an example.
 TODO
 ----
 
--  [STRIKEOUT:Automatically register new pages, resources, etc.]
--  When the application starts up, check if the s3 folder is different.
-   If it is, ask the user if they want to upload their local files to
-   s3, or pull s3 to their local files.
--  API access to LemonStand2 for token access, AWS user credentials,
-   store hash name, etc.
--  Bundle as a ``pip`` package or use ``pyinstaller`` to create a cross
-   platform executable.
+-  When LemonSync starts, check if the theme has been modified somewhere else.
+   If it has, ask the user if they want to upload their local files, 
+   or pull the remote theme to their local version.
 -  Make it easy for multiple developers to work on the same theme.
 
+.. _pip: http://www.pip-installer.org/
+:: _source: https://pypi.python.org/pypi/LemonSync
