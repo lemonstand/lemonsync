@@ -26,7 +26,7 @@ command to install `LemonSync`:
 
     $ pip install lemonsync   
 
-If you do not have pip installed, you can download it from `source`_:  
+If you do not have pip installed, you can download it from source:  
 
 ::
 
@@ -121,4 +121,3 @@ TODO
 -  Make it easy for multiple developers to work on the same theme.
 
 .. _pip: http://www.pip-installer.org/
-:: _source: https://pypi.python.org/pypi/LemonSync
