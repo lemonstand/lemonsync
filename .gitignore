@@ -8,3 +8,4 @@ MANIFEST.in
 .DS_Store
 venv
 dist/
+config.cfg
