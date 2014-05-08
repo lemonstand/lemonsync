@@ -10,7 +10,7 @@ from boto.s3.key import Key
 from Config import config
 from Connector import Connector
 
-class Listener(FileSystemEventHandler):
+class Listener (FileSystemEventHandler):
 	
 	def __init__(self):
 		# Get the s3 credentials for a federated user from the LemonStand2 API
