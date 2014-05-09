@@ -3,7 +3,7 @@
 import sys 
 import time
 import os 
-import getopt
+import argparse
 from sys import version_info
 from Parser import Parser
 from Listener import Listener
@@ -12,37 +12,17 @@ from Connector import Connector
 from watchdog.observers import Observer
 
 def main(): 
-	# Defaults
-	cfile = None
-	reset = False
-	usage = 'Usage: lemonsync --config=<configfile> [options]'
-
 	# Handle any command line arguments
-	if len(sys.argv) < 2:
-		print usage
-		sys.exit(2)
-
-	try:
-		opts, args = getopt.getopt(sys.argv[1:],"c:r:",["config=", "reset="])
-	except getopt.GetoptError:
-		print usage
-		sys.exit(2)
-
-	for o, attr in opts:
-		if o in ("-c", "--config"):
-			cfile = attr
-		elif o in ("-r", "--reset"):
-			reset = attr
-		else:
-			sys.exit(usage)
-
+	p = argparse.ArgumentParser(description='LemonSync v 0.1.6')
+	p.add_argument("-c", "--config", help="A configuration file must be present.", required=True)
+	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
+	args = p.parse_args()
 
 	# If the reset option was passed 
-	if not reset in ("local", "remote"):
-		sys.exit(usage)
+	if args.reset and not args.reset in ("local", "remote"):
+		p.error('Options for [-r RESET] are [local|remote].')
 
-
-	config = Parser(cfile)
+	config = Parser(args.config)
 
 	# Make sure the watch directory exists
 	if not os.path.isdir(config.watch_dir):
@@ -59,9 +39,9 @@ def main():
 	# Used to run some basic utilities
 	utils = Utils(connection, config)
 
-	if reset == "local":
+	if args.reset == "local":
 		utils.reset_local()
-	elif reset == "remote":
+	elif args.reset == "remote":
 		utils.reset_remote()
 	else:
 		# Loop over every file in the watch dir
@@ -69,9 +49,7 @@ def main():
 		changes = utils.file_changes()
 
 		if changes:
-			utils.clean_changes()
-
-
+			utils.clean_changes(changes)
 
 	# Watchdog initialtion
 	observer = Observer()

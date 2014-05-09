@@ -72,7 +72,49 @@ class Utils ():
 
 	# 
 	def reset_remote (self):
-		print 1
+		print '\033[91m' + 'Are you sure you want to permanlty overwrite your remote theme with the contents of ' + self.config.watch_dir + '?' + '\033[91m'
+		print '\033[91m' + 'Type [Y] to overwrite your remote theme or [q] to quit. Any other key will result in no action being taken.' + '\033[91m'
+
+		if version_info[0] > 2:
+			response = input(": ")
+		else:
+			response = raw_input(": ")
+
+		if not response == "Y":
+			sys.exit(1)
+
+		# delete the contents of the remote bucket from the 
+		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
+		keys = self.connection["bucket"].list(prefix=path)
+
+		# rest the remote theme
+		for key in keys:
+			key.delete()
+
+		# Get the filenames we about to push to s3
+		uploads = []
+
+		for (source, dirname, filenames) in os.walk(self.config.watch_dir):
+			for name in filenames:
+				uploads.append(os.path.join(source, name))
+
+		# Upload the new files
+		for filename in uploads:
+			keypath = filename.replace(self.config.watch_dir, '')
+			keyname = os.path.join(self.connection["store"], "themes", self.connection["theme"], keypath)
+
+			# ignore git files
+			if keypath.startswith(".git"):
+				continue
+
+			try:
+				k = self.connection["bucket"].new_key(keyname)
+				k.set_contents_from_filename(filename)
+				print '\033[92m' + '[' + time.strftime("%c") + '] Successfully uploaded ' + keyname + ''
+			except:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + keyname + ''
+
+		return
 
 	def reset_local (self):
 
@@ -118,18 +160,19 @@ class Utils ():
 	def clean_changes (self, changes):
  		for files in changes:
 			print '--- ' + files
-			print '\033[91m' + 'Version mismatch!' + '\033[91m'
-			print '\033[91m' + 'Type [1] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + '\033[91m'
+			
+		print '\033[91m' + 'Version mismatch!' + '\033[91m'
+		print '\033[91m' + 'Type [1] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + '\033[91m'
 
-			if version_info[0] > 2:
-				response = input(": ")
-			else:
-				response = raw_input(": ")
+		if version_info[0] > 2:
+			response = input(": ")
+		else:
+			response = raw_input(": ")
 
-			if response == "1":
-				# Sync the changed remote files with the local files
-				self.sync(changes)
-			elif response == "q":
-				sys.exit(0)
+		if response == "1":
+			# Sync the changed remote files with the local files
+			self.sync(changes)
+		elif response == "q":
+			sys.exit(0)
 
 		return
