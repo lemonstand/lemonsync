@@ -10,6 +10,7 @@ CHANGELOG
 	- `ignore_dirs`
 		- Provide a pattern for ignoreing files
 - Show any files from LemonStand that are different than the local file system
+- Add command line argument `--reset-hard` to force overwriting local files with remote
 
 ##Version 1.5.0
 **May 1, 2014**

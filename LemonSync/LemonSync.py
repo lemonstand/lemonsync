@@ -12,30 +12,41 @@ from Connector import Connector
 from watchdog.observers import Observer
 
 def main(): 
-	#creates boolean value for test that Python major version > 2
-	py3 = version_info[0] > 2 
-
 	# Defaults
-	file = None
+	cfile = None
+	reset = False
+	usage = 'Usage: lemonsync --config=<configfile> [options]'
 
 	# Handle any command line arguments
 	if len(sys.argv) < 2:
-		print 'Usage: lemonsync --config=<configfile>'
+		print usage
 		sys.exit(2)
 
 	try:
-		opts, args = getopt.getopt(sys.argv[1:],"c:f:",["config="])
+		opts, args = getopt.getopt(sys.argv[1:],"c:r:",["config=", "reset="])
 	except getopt.GetoptError:
-		print 'Usage: lemonsync --config=<configfile>'
+		print usage
 		sys.exit(2)
 
-	for o, a in opts:
+	for o, attr in opts:
 		if o in ("-c", "--config"):
-			file = a
+			cfile = attr
+		elif o in ("-r", "--reset"):
+			reset = attr
 		else:
-			assert False, "unhandled option"
+			sys.exit(usage)
 
-	config = Parser(file)
+
+	# If the reset option was passed 
+	if not reset in ("local", "remote"):
+		sys.exit(usage)
+
+
+	config = Parser(cfile)
+
+	# Make sure the watch directory exists
+	if not os.path.isdir(config.watch_dir):
+		sys.exit("Watch directory does not exist!")
 
 	# Start 
 	print '\033[93m' + 'LemonSync is initiating connection...'
@@ -48,24 +59,18 @@ def main():
 	# Used to run some basic utilities
 	utils = Utils(connection, config)
 
-	# Loop over every file in the watch dir
-	changes = utils.file_changes()
-
-	if changes:
- 		for files in changes:
-			print '--- ' + files
-		print '\033[91m' + 'Version mismatch!' + '\033[91m'
-		print '\033[91m' + 'Type [1] + [Enter] to overwrite your local files. Any other key will result in no action being taken.' + '\033[91m'
-
-	if py3:
-		response = input(": ")
+	if reset == "local":
+		utils.reset_local()
+	elif reset == "remote":
+		utils.reset_remote()
 	else:
-		response = raw_input(": ")
+		# Loop over every file in the watch dir
+		# Do not need to perform this action if the local files have been overwritten already
+		changes = utils.file_changes()
 
-	if response == "1":
-		print '000'
-		# Sync the changed remote files with the local files
-		utils.sync(changes)
+		if changes:
+			utils.clean_changes()
+
 
 
 	# Watchdog initialtion

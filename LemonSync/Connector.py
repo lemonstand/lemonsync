@@ -31,7 +31,7 @@ class Connector:
 			# The connection will fail if the configuation values are not set correctly.
 			r = requests.get(api_host + path, headers=headers, allow_redirects=False)
 		except:
-			print "Could not make connection to LemonStand. Please make sure your configuration values are set correctly."
+			sys.exit("Could not make connection to LemonStand. Please make sure your configuration values are set correctly.")
 
 		response = r.json()
 
