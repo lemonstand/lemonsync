@@ -47,6 +47,7 @@ class Utils ():
 			# ignore git files
 			if f.startswith(".git"):
 				continue
+				
 			path = os.path.join(self.config.watch_dir, f)
 			key = os.path.join(self.connection["store"], "themes", self.connection["theme"], f)
 
@@ -83,13 +84,7 @@ class Utils ():
 		if not response == "Y":
 			sys.exit(1)
 
-		# delete the contents of the remote bucket from the 
-		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
-		keys = self.connection["bucket"].list(prefix=path)
-
-		# rest the remote theme
-		for key in keys:
-			key.delete()
+		self.remove_remote_files()
 
 		# Get the filenames we about to push to s3
 		uploads = []
@@ -129,22 +124,12 @@ class Utils ():
 		if not response == "Y":
 			sys.exit(1)
 
-		for the_file in os.listdir(self.config.watch_dir):
-			file_path = os.path.join(self.config.watch_dir, the_file)
-
-			# Do not delete any git files
-			if the_file.startswith(".git"):
-				continue
-
-			try:
-				if os.path.isfile(file_path):
-					os.unlink(file_path)
-				elif os.path.isdir(file_path):
-					shutil.rmtree(file_path)
-			except Exception, e:
-				print e
+		# Prepare the directory
+		self.remove_local_files(self.config.watch_dir)
 
 		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
+
+		# retreive the list of keys from the bucket
 		rs_keys = self.connection["bucket"].list(prefix=path)
 
 		new_files = []
@@ -157,19 +142,49 @@ class Utils ():
 
 		return
 
+	# Removes any application files from a directory.
+	# This is used when resetting a folder with the upstream theme
+	def remove_local_files (self, directory):
+		for the_file in os.listdir(directory):
+			file_path = os.path.join(directory, the_file)
+
+			# Do not delete any git files
+			if the_file.startswith(".git"):
+				continue
+
+			try:
+				if os.path.isfile(file_path):
+					os.unlink(file_path)
+				elif os.path.isdir(file_path):
+					shutil.rmtree(file_path)
+			except Exception, e:
+				print e
+		return
+
+	def remove_remote_files (self):
+		# delete the contents of the remote bucket from the 
+		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
+		keys = self.connection["bucket"].list(prefix=path)
+
+		# rest the remote theme
+		for key in keys:
+			key.delete()
+
+		return
+
 	def clean_changes (self, changes):
  		for files in changes:
 			print '--- ' + files
 			
-		print '\033[91m' + 'Version mismatch!' + '\033[91m'
-		print '\033[91m' + 'Type [1] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + '\033[91m'
+		print '\033[91m' + 'Version mismatch! Do you want to pull in changed files from your remote store?' + '\033[91m'
+		print '\033[91m' + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + '\033[91m'
 
 		if version_info[0] > 2:
 			response = input(": ")
 		else:
 			response = raw_input(": ")
 
-		if response == "1":
+		if response == "Y":
 			# Sync the changed remote files with the local files
 			self.sync(changes)
 		elif response == "q":
