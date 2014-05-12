@@ -6,7 +6,7 @@ from watchdog.events import PatternMatchingEventHandler
 
 class Listener (PatternMatchingEventHandler):
 		
-	def __init__ (self, connection, config):
+	def __init__ (self, connection, config, utils):
 
 		if hasattr(config, 'file_patterns'):
 			try:
@@ -29,6 +29,7 @@ class Listener (PatternMatchingEventHandler):
 
 		self.connection = connection
 		self.config = config
+		self.utils = utils
 
 	def __getKey (self, event_path):
 		# strip out the watch dir, from the modified path to get the relative folder in S3
