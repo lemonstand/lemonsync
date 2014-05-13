@@ -1,94 +1,93 @@
 import sys 
 import time
 import os 
-import boto.s3 
-import boto.s3.connection 
-
-from boto.s3.key import Key
-from watchdog.events import FileSystemEventHandler
-from boto.s3.key import Key
-from Config import config
+import json
 from Connector import Connector
+from watchdog.events import PatternMatchingEventHandler
 
-class Listener(FileSystemEventHandler):
-	
-	def __init__(self):
-		# Get the s3 credentials for a federated user from the LemonStand2 API
-		credentials = Connector()
-		identity = credentials.getIdentity(config.api_host, config.store_host, config.api_access)
+class Listener (PatternMatchingEventHandler):
+		
+	def __init__ (self, connection, config, utils):
 
-		self.conn = boto.s3.connection.S3Connection(aws_access_key_id=identity['key'], aws_secret_access_key=identity['secret'], security_token=identity['token']) 
-		self.bucket = self.conn.get_bucket(identity['bucket'], validate = False)
-		self.store = identity['store']
-		self.theme = identity['theme']
-		self.watch = config.watch_dir
+		if hasattr(config, 'file_patterns'):
+			try:
+				PatternMatchingEventHandler.patterns = json.loads(config.file_patterns)
+			except:
+				sys.exit('The configuration value for file_patterns needs to be valid JSON.')
+		else:
+			PatternMatchingEventHandler.patterns = [ "*.md", "*.yaml","*.ini","*.conf","*.cfg","*.png", "*.jpeg", "*.jpg", "*.gif", "*.ico", "*.pdf", "*.htm","*.html","*.scss","*.css","*.js","*.coffee","*.htm" ]
 
-		print '\033[92m' + 'LemonSync is listening to changes on ' + config.watch_dir
+		if hasattr(config, 'ignore_dirs'):
+			try:
+				PatternMatchingEventHandler.ignore_patterns = json.loads(config.ignore_dirs)
+			except:
+				sys.exit('The configuration value for ignore_dirs needs to be valid JSON.')
+		else:
+			PatternMatchingEventHandler.ignore_patterns = [ "*.tmp" , "*.git/*" ]
 
-	def __getKey(self, event_path):
+		PatternMatchingEventHandler.ignore_directories = True
+		PatternMatchingEventHandler.case_sensitive = True
+
+		self.connection = connection
+		self.config = config
+		self.utils = utils
+		self.retries = 1
+
+	def __checkConnection (self):
+		# Get a new connection object to lemonstand API
+		c = Connector()
+		identity = c.getIdentity(self.config.api_host, self.config.store_host, self.config.api_access)
+		connection = c.s3Connection(identity);
+		self.connection = connection
+
+		return
+
+	def __getKey (self, event_path):
 		# strip out the watch dir, from the modified path to get the relative folder in S3
-		path = event_path.replace(self.watch, '')
+		path = event_path.replace(self.config.watch_dir, '')
 		# this will create the full s3 key
-		key = os.path.join(self.store, "themes", self.theme, path)
+		key = os.path.join(self.connection["store"], "themes", self.connection["theme"], path)
 
 		return key
 
-	def remove(self, event_path):
+	def remove (self, event_path):
 		key = self.__getKey(event_path)
 
 		try:
-			self.bucket.delete_key(key)
+			self.connection["bucket"].delete_key(key)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully removed ' + key + ''
 		except:
-			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
+			if (self.retries > 0):
+				self.retries-=1
+				self.__checkConnection()
+				self.remove(event_path)
+			else:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
 
-	def upsert(self, event_path):
+	def upsert (self, event_path):
 		key = self.__getKey(event_path)
 
 		try:
-			k = self.bucket.new_key(key)
+			k = self.connection["bucket"].new_key(key)
 			k.set_contents_from_filename(event_path)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully uploaded ' + key + ''
 		except:
-			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
+			if (self.retries > 0):
+				self.retries-=1
+				self.__checkConnection()
+				self.upsert(event_path)
+			else:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
 
 
-	def on_modified(self, event):
-		filename, ext = os.path.splitext(event.src_path)
+	def on_modified (self, event):
+		self.upsert(event.src_path)
 
-		# Some editors will create tmp files before writing to the actual file
-		if (ext == '.tmp'): 
-			return
+	def on_created (self, event):
+		self.upsert(event.src_path)
 
-		if not event.is_directory:
-			self.upsert(event.src_path)
+	def on_moved (self, event):
+		self.upsert(event.dest_path)
 
-	def on_created(self, event):
-		filename, ext = os.path.splitext(event.src_path)
-
-		# Some editors will create tmp files before writing to the actual file
-		if (ext == '.tmp'): 
-			return
-
-		if not event.is_directory:
-			self.upsert(event.src_path)
-
-	def on_moved(self, event):
-		filename, ext = os.path.splitext(event.dest_path)
-
-		# Some editors will create tmp files before writing to the actual file
-		if (ext == '.tmp'): 
-			return
-
-		if not event.is_directory:
-			self.upsert(event.dest_path)
-
-	def on_deleted(self, event):
-		filename, ext = os.path.splitext(event.src_path)
-
-		# Some editors will create tmp files before writing to the actual file
-		if (ext == '.tmp'): 
-			return
-
-		if not event.is_directory:
-			self.remove(event.src_path)
+	def on_deleted (self, event):
+		self.remove(event.src_path)

@@ -3,7 +3,6 @@
 
 """Convenience wrapper for running lemonsync directly from source tree."""
 
-
 from LemonSync.LemonSync import main
 
 if __name__ == '__main__':
