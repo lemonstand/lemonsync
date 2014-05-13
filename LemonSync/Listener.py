@@ -2,6 +2,7 @@ import sys
 import time
 import os 
 import json
+from Connector import Connector
 from watchdog.events import PatternMatchingEventHandler
 
 class Listener (PatternMatchingEventHandler):
@@ -30,6 +31,16 @@ class Listener (PatternMatchingEventHandler):
 		self.connection = connection
 		self.config = config
 		self.utils = utils
+		self.retries = 1
+
+	def __checkConnection (self):
+		# Get a new connection object to lemonstand API
+		c = Connector()
+		identity = c.getIdentity(self.config.api_host, self.config.store_host, self.config.api_access)
+		connection = c.s3Connection(identity);
+		self.connection = connection
+
+		return
 
 	def __getKey (self, event_path):
 		# strip out the watch dir, from the modified path to get the relative folder in S3
@@ -46,7 +57,12 @@ class Listener (PatternMatchingEventHandler):
 			self.connection["bucket"].delete_key(key)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully removed ' + key + ''
 		except:
-			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
+			if (self.retries > 0):
+				self.retries-=1
+				self.__checkConnection()
+				self.remove(event_path)
+			else:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
 
 	def upsert (self, event_path):
 		key = self.__getKey(event_path)
@@ -56,7 +72,12 @@ class Listener (PatternMatchingEventHandler):
 			k.set_contents_from_filename(event_path)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully uploaded ' + key + ''
 		except:
-			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
+			if (self.retries > 0):
+				self.retries-=1
+				self.__checkConnection()
+				self.upsert(event_path)
+			else:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
 
 
 	def on_modified (self, event):

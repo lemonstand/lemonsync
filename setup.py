@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="LemonSync",
-    version="0.1.4",
+    version="0.1.6",
     author='LemonStand',
     author_email='chris@lemonstand.com',
     download_url='https://github.com/lemonstand/LemonSync',
