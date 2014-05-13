@@ -1,16 +1,19 @@
 CHANGELOG
 =======
 
-##Version 1.6.0
+##Version 0.1.6
 **May 15, 2014**
 
 - Add configuration values 
 	- `pattern_match` 
-		- Explicityl state what files LemonSync will listen for
+		- Explicitly state what files LemonSync will listen for
 	- `ignore_dirs`
-		- Provide a pattern for ignoreing files
+		- Provide a pattern for ignoring files
 - Show any files from LemonStand that are different than the local file system
-- Add command line argument `--reset-hard` to force overwriting local files with remote
+- Add command line argument `--reset=local` to force overwriting local files with remote theme files
+- Add command line argument `--reset=remote` to force overwriting the remote theme files with the local files
 
-##Version 1.5.0
+##Version 0.1.5
 **May 1, 2014**
+
+- First official (beta) release
