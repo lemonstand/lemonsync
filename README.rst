@@ -80,6 +80,26 @@ To stop the program type ``Ctrl-C``.
 
     $ lemonsync --config=path/to/your/config.cfg   
 
+Version `0.1.6` instroduced two new command line arguments.
+
+::
+
+    $ lemonsync --config=path/to/your/config.cfg --reset=local   
+
+This will completely replace the contents of `watch_dir` set in `path/to/your/config.cfg`
+with the contents of your remote theme. All files and folders except `.git*` will be removed.
+**This is an advanced feature and should be used with caution!**
+
+::
+
+    $ lemonsync --config=path/to/your/config.cfg --reset=remote   
+
+This will completely replace the contents of your remote theme with the content
+in `watch_dir`, set in `path/to/your/config.cfg`.
+
+**This is an advanced feature and should be used with caution! If not careful, you
+could end up deleting your entire remote theme!** 
+
 Getting Started
 ---------------
 
