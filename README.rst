@@ -146,7 +146,7 @@ below for an example.
     ---
 
 Pages also need to be named following a specific structure. The filename must 
-begin with `page-` and end with `.htm`. Pages without this format will be 
+begin with ``page-`` and end with ``.htm``. Pages without this format will be 
 ignored by your LemonStand store. See below for an example.
 
 ::
