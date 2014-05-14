@@ -42,6 +42,9 @@ from watchdog.observers import Observer
 def get_configuration (args):
 	configuration = Parser(args.config)
 
+	# Make sure the watch directory has a trailing slash
+	configuration.watch_dir = os.path.normpath(configuration.watch_dir) + os.sep
+
 	# Make sure the watch directory exists before trying to run any utilities
 	if not os.path.isdir(configuration.watch_dir):
 		sys.exit("Watch directory does not exist!")
