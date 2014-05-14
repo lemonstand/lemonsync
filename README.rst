@@ -65,6 +65,8 @@ generate a private API key for ``LemonSync``.
 
     [dir]
     watch_dir = /path/to/your/local/theme/
+    file_patterns = [ "*.md", "*.yaml", "*.ini", "*.conf", "*.cfg", "*.png", "*.jpeg", "*.jpg", "*.gif", "*.ico", "*.pdf", "*.htm", "*.html", "*.scss", "*.css", "*.js", "*.coffee", "*.htm" ]
+    ignore_patterns = [ "*.private/local/file" , "*.git/*" ]
 
     [store]
     store_host = YOUR_STORE.lemonstand.com  
