@@ -1,9 +1,9 @@
 LemonSync
 =========
 
-lemonsync 0.1.6
+lemonsync 0.1.7
 
-Released: 13-May-2014
+Released: 17-May-2014
 
 .. image:: https://pypip.in/download/LemonSync/badge.png
     :target: https://pypi.python.org/pypi//LemonSync/
@@ -14,6 +14,15 @@ Released: 13-May-2014
 automatically push updates to your store theme. This is helpful if you
 want to add your theme under version control, or prefer to work locally
 rather than in the LemonStand UI.
+
+Platforms
+---------
+
+LemonSync supports the following platforms.
+
+- Mac OS X
+- Windows 7
+- Linux 2.6
 
 Installation
 ------------
@@ -65,12 +74,11 @@ generate a private API key for ``LemonSync``.
 
     [dir]
     watch_dir = /path/to/your/local/theme/
-    file_patterns = [ "*.md", "*.yaml", "*.ini", "*.conf", "*.cfg", "*.png", "*.jpeg", "*.jpg", "*.gif", "*.ico", "*.pdf", "*.htm", "*.html", "*.scss", "*.css", "*.js", "*.coffee", "*.htm" ]
-    ignore_patterns = [ "*.private/local/file" , "*.git/*" ]
+    file_patterns = [ "*" ]
+    ignore_patterns = [ '*.tmp', '*.TMP', '*/.git/*' ]
 
     [store]
     store_host = YOUR_STORE.lemonstand.com  
-
 
 Usage
 -----

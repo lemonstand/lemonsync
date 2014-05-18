@@ -1,6 +1,15 @@
 CHANGELOG
 =======
 
+##Version 0.1.7
+**May 17, 2014**
+
+- **Bug Fix** (minor): The `ignore_patterns` setting was being incorrectly referenced.  
+- Better error handling when connection to s3 can not be made.
+- Function renaming in `Connector` class
+- Change default watch settings
+- Make windows compatible
+
 ##Version 0.1.6
 **May 13, 2014**
 
