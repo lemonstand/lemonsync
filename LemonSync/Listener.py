@@ -13,17 +13,18 @@ class Listener (PatternMatchingEventHandler):
 			try:
 				PatternMatchingEventHandler.patterns = json.loads(config.file_patterns)
 			except:
-				sys.exit('The configuration value for file_patterns needs to be valid JSON.')
+				sys.exit('\033[91m' + 'The configuration value for file_patterns needs to be valid JSON.' + '\033[91m')
 		else:
-			PatternMatchingEventHandler.patterns = [ "*.md", "*.yaml","*.ini","*.conf","*.cfg","*.png", "*.jpeg", "*.jpg", "*.gif", "*.ico", "*.pdf", "*.htm","*.html","*.scss","*.css","*.js","*.coffee","*.htm" ]
+			# Set the default patterns to watch
+			PatternMatchingEventHandler.patterns = [ "*" ]
 
-		if hasattr(config, 'ignore_dirs'):
+		if hasattr(config, 'ignore_patterns'):
 			try:
-				PatternMatchingEventHandler.ignore_patterns = json.loads(config.ignore_dirs)
+				PatternMatchingEventHandler.ignore_patterns = json.loads(config.ignore_patterns)
 			except:
-				sys.exit('The configuration value for ignore_dirs needs to be valid JSON.')
+				sys.exit('\033[91m' + 'The configuration value for ignore_patterns needs to be valid JSON.' + '\033[91m')
 		else:
-			PatternMatchingEventHandler.ignore_patterns = [ "*.tmp" , "*.git/*" ]
+			PatternMatchingEventHandler.ignore_patterns = [ '*.tmp', '*.TMP', '*/.git/*' ]
 
 		PatternMatchingEventHandler.ignore_directories = True
 		PatternMatchingEventHandler.case_sensitive = True
@@ -36,8 +37,8 @@ class Listener (PatternMatchingEventHandler):
 	def __checkConnection (self):
 		# Get a new connection object to lemonstand API
 		c = Connector()
-		identity = c.getIdentity(self.config.api_host, self.config.store_host, self.config.api_access)
-		connection = c.s3Connection(identity);
+		identity = c.get_identity(self.config.api_host, self.config.store_host, self.config.api_access)
+		connection = c.s3_connection(identity);
 		self.connection = connection
 
 		return
@@ -46,7 +47,7 @@ class Listener (PatternMatchingEventHandler):
 		# strip out the watch dir, from the modified path to get the relative folder in S3
 		path = event_path.replace(self.config.watch_dir, '')
 		# this will create the full s3 key
-		key = os.path.join(self.connection["store"], "themes", self.connection["theme"], path)
+		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path])
 
 		return key
 

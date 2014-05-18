@@ -19,7 +19,8 @@ class Utils ():
 
 	def file_changes (self):
 		modified_files = []
-		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
+		# Windows compatible
+		path = "/".join([self.connection["store"], "themes", self.connection["theme"]])
 		rs_keys = self.connection["bucket"].list(prefix=path)
 
 		# Go though each file in s3 and compare it with the local file system
@@ -49,7 +50,7 @@ class Utils ():
 				continue
 				
 			path = os.path.join(self.config.watch_dir, f)
-			key = os.path.join(self.connection["store"], "themes", self.connection["theme"], f)
+			key = "/".join([self.connection["store"], "themes", self.connection["theme"], f])
 
 			# Split the path into the directoy and the filename
 			file_dir, file_name = os.path.split(path)
@@ -96,7 +97,7 @@ class Utils ():
 		# Upload the new files
 		for filename in uploads:
 			keypath = filename.replace(self.config.watch_dir, '')
-			keyname = os.path.join(self.connection["store"], "themes", self.connection["theme"], keypath)
+			keyname = "/".join([self.connection["store"], "themes", self.connection["theme"], keypath])
 
 			# ignore git files
 			if keypath.startswith(".git"):
@@ -162,8 +163,8 @@ class Utils ():
 		return
 
 	def remove_remote_files (self):
-		# delete the contents of the remote bucket from the 
-		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
+		# delete the contents of the remote bucket
+		path = "/".join([self.connection["store"], "themes", self.connection["theme"]])
 		keys = self.connection["bucket"].list(prefix=path)
 
 		# rest the remote theme
