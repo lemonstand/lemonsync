@@ -42,6 +42,9 @@ from watchdog.observers import Observer
 def get_configuration (args):
 	configuration = Parser(args.config)
 
+	# Make sure the watch directory has a trailing slash
+	configuration.watch_dir = os.path.normpath(configuration.watch_dir) + os.sep
+
 	# Make sure the watch directory exists before trying to run any utilities
 	if not os.path.isdir(configuration.watch_dir):
 		sys.exit("Watch directory does not exist!")
@@ -50,12 +53,12 @@ def get_configuration (args):
 
 def get_connection (configuration):
 	# Start 
-	print '\033[93m' + 'LemonSync is initiating connection...'
+	print '\033[93m' + 'LemonSync is initiating connection...' + '\033[93m'
 
 	# Establish a connection to the LemonStand API, and then to S3
 	c = Connector()
-	identity = c.getIdentity(configuration.api_host, configuration.store_host, configuration.api_access)
-	connection = c.s3Connection(identity);
+	identity = c.get_identity(configuration.api_host, configuration.store_host, configuration.api_access)
+	connection = c.s3_connection(identity);
 
 	return connection
 
@@ -83,7 +86,7 @@ def start_watching (connection, configuration, utils):
 	observer.schedule(Listener(connection, configuration, utils), configuration.watch_dir, recursive=True)
 	observer.start()
 
-	print '\033[92m' + 'LemonSync is listening to changes on ' + configuration.watch_dir
+	print '\033[92m' + 'LemonSync is listening to changes on ' + configuration.watch_dir + '\033[92m'
 
 	try:
 		while True:

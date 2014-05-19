@@ -2,6 +2,7 @@ import sys
 import time
 import os 
 import json
+from Connector import Connector
 from watchdog.events import PatternMatchingEventHandler
 
 class Listener (PatternMatchingEventHandler):
@@ -12,17 +13,18 @@ class Listener (PatternMatchingEventHandler):
 			try:
 				PatternMatchingEventHandler.patterns = json.loads(config.file_patterns)
 			except:
-				sys.exit('The configuration value for file_patterns needs to be valid JSON.')
+				sys.exit('\033[91m' + 'The configuration value for file_patterns needs to be valid JSON.' + '\033[91m')
 		else:
-			PatternMatchingEventHandler.patterns = [ "*.md", "*.yaml","*.ini","*.conf","*.cfg","*.png", "*.jpeg", "*.jpg", "*.gif", "*.ico", "*.pdf", "*.htm","*.html","*.scss","*.css","*.js","*.coffee","*.htm" ]
+			# Set the default patterns to watch
+			PatternMatchingEventHandler.patterns = [ "*" ]
 
-		if hasattr(config, 'ignore_dirs'):
+		if hasattr(config, 'ignore_patterns'):
 			try:
-				PatternMatchingEventHandler.ignore_patterns = json.loads(config.ignore_dirs)
+				PatternMatchingEventHandler.ignore_patterns = json.loads(config.ignore_patterns)
 			except:
-				sys.exit('The configuration value for ignore_dirs needs to be valid JSON.')
+				sys.exit('\033[91m' + 'The configuration value for ignore_patterns needs to be valid JSON.' + '\033[91m')
 		else:
-			PatternMatchingEventHandler.ignore_patterns = [ "*.tmp" , "*.git/*" ]
+			PatternMatchingEventHandler.ignore_patterns = [ '*.tmp', '*.TMP', '*/.git/*' ]
 
 		PatternMatchingEventHandler.ignore_directories = True
 		PatternMatchingEventHandler.case_sensitive = True
@@ -30,12 +32,22 @@ class Listener (PatternMatchingEventHandler):
 		self.connection = connection
 		self.config = config
 		self.utils = utils
+		self.retries = 1
+
+	def __checkConnection (self):
+		# Get a new connection object to lemonstand API
+		c = Connector()
+		identity = c.get_identity(self.config.api_host, self.config.store_host, self.config.api_access)
+		connection = c.s3_connection(identity);
+		self.connection = connection
+
+		return
 
 	def __getKey (self, event_path):
 		# strip out the watch dir, from the modified path to get the relative folder in S3
 		path = event_path.replace(self.config.watch_dir, '')
 		# this will create the full s3 key
-		key = os.path.join(self.connection["store"], "themes", self.connection["theme"], path)
+		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path])
 
 		return key
 
@@ -46,7 +58,12 @@ class Listener (PatternMatchingEventHandler):
 			self.connection["bucket"].delete_key(key)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully removed ' + key + ''
 		except:
-			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
+			if (self.retries > 0):
+				self.retries-=1
+				self.__checkConnection()
+				self.remove(event_path)
+			else:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to remove ' + key + ''
 
 	def upsert (self, event_path):
 		key = self.__getKey(event_path)
@@ -56,7 +73,12 @@ class Listener (PatternMatchingEventHandler):
 			k.set_contents_from_filename(event_path)
 			print '\033[92m' + '[' + time.strftime("%c") + '] Successfully uploaded ' + key + ''
 		except:
-			print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
+			if (self.retries > 0):
+				self.retries-=1
+				self.__checkConnection()
+				self.upsert(event_path)
+			else:
+				print '\033[91m' + '[' + time.strftime("%c") + '] Failed to upload ' + key + ''
 
 
 	def on_modified (self, event):

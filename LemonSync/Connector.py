@@ -14,7 +14,7 @@ class Connector:
 		self.identity = None
 
 	# Handke the connection to the LemonStand API
-	def getIdentity (self, api_host, store_host, api_access):
+	def get_identity (self, api_host, store_host, api_access):
 
 		# This is the API endpoint that will give us access to our s3 bucket in AWS
 		path = '/v2/identity/s3'
@@ -41,7 +41,7 @@ class Connector:
 		return response
 
 	# Handles the connection to s3
-	def s3Connection (self, identity):
+	def s3_connection (self, identity):
 		connection = {}
 
 		try:
@@ -50,6 +50,6 @@ class Connector:
 			connection["store"] = identity['store']
 			connection["theme"] = identity['theme']
 		except:
-			print "Could not make connection to s3. Please make sure your configuration values are set correctly."
+			sys.exit('Could not make connection to s3. Please make sure your configuration values are set correctly.')
 
 		return connection
