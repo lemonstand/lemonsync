@@ -3,6 +3,7 @@ import time
 import os 
 import json
 import requests
+import time
 from Connector import Connector
 from watchdog.events import PatternMatchingEventHandler
 from colorama import Fore, Back, Style
@@ -81,10 +82,15 @@ class Listener (PatternMatchingEventHandler):
 
 	def upsert (self, event_path):
 		key = self.__getKey(event_path)
+		expires = int(time.time())
+		headers = {
+			'Cache-Control': "max-age=" + str(expires) + ", public",
+			'Expires': expires
+		}
 
 		try:
 			k = self.connection["bucket"].new_key(key)
-			k.set_contents_from_filename(event_path)
+			k.set_contents_from_filename(event_path, headers=headers)
 			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + key + Style.RESET_ALL
 		except:
 			if (self.retries > 0):

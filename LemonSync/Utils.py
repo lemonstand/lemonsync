@@ -115,9 +115,15 @@ class Utils ():
 				case_sensitive=True):
 				continue
 
+			expires = int(time.time())
+			headers = {
+				'Cache-Control': "max-age=" + str(expires) + ", public",
+				'Expires': expires
+			}
+
 			try:
 				k = self.connection["bucket"].new_key(keyname)
-				k.set_contents_from_filename(filename)
+				k.set_contents_from_filename(filename, headers=headers)
 				keynames.append(keypath)
 				print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + keyname + Style.RESET_ALL
 			except:
