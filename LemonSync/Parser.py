@@ -1,6 +1,7 @@
 import sys
 import getopt
 from ConfigParser import SafeConfigParser
+from colorama import Fore, Back, Style
 
 sections = 'api', 'dir', 'store'
 
@@ -10,6 +11,6 @@ class Parser (object):
 		parser.optionxform = str
 		found = parser.read(file)
 		if not found:
-			sys.exit('No config file found!')
+			sys.exit(Fore.RED + "No config file found!" + Style.RESET_ALL)
 		for name in sections:
 			self.__dict__.update(parser.items(name))

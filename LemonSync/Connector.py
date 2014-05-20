@@ -6,6 +6,7 @@ import requests
 import boto.s3 
 import boto.s3.connection 
 from boto.s3.key import Key
+from colorama import Fore, Back, Style
 
 class Connector:
 
@@ -31,12 +32,12 @@ class Connector:
 			# The connection will fail if the configuation values are not set correctly.
 			r = requests.get(api_host + path, headers=headers, allow_redirects=False)
 		except:
-			sys.exit("Could not make connection to LemonStand. Please make sure your configuration values are set correctly.")
+			sys.exit(Fore.RED + "Could not make connection to LemonStand. Please make sure your configuration values are set correctly." + Style.RESET_ALL)
+
+		if r.status_code != 200:
+			sys.exit(Fore.RED + 'Access token or store host is not valid!' + Style.RESET_ALL)
 
 		response = r.json()
-
-		if 'errors' in response:
-			sys.exit('Error! Access token or store host is not valid.')
 
 		return response
 
@@ -49,7 +50,8 @@ class Connector:
 			connection["bucket"] = connection["conn"].get_bucket(identity['bucket'], validate = False)
 			connection["store"] = identity['store']
 			connection["theme"] = identity['theme']
+			connection["bucket_name"] = identity['bucket']
 		except:
-			sys.exit('Could not make connection to s3. Please make sure your configuration values are set correctly.')
+			sys.exit(Fore.RED + 'Could not make connection to s3! Please make sure your configuration values are set correctly.' + Style.RESET_ALL)
 
 		return connection

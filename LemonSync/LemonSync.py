@@ -32,12 +32,14 @@ import sys
 import os 
 import argparse
 import time
+import json
 from sys import version_info
 from Parser import Parser
 from Listener import Listener
 from Utils import Utils
 from Connector import Connector
 from watchdog.observers import Observer
+from colorama import init, Fore, Back, Style
 
 def get_configuration (args):
 	configuration = Parser(args.config)
@@ -47,13 +49,31 @@ def get_configuration (args):
 
 	# Make sure the watch directory exists before trying to run any utilities
 	if not os.path.isdir(configuration.watch_dir):
-		sys.exit("Watch directory does not exist!")
+		sys.exit(Fore.RED + "Watch directory does not exist!" + Style.RESET_ALL)
+
+	if hasattr(configuration, 'file_patterns'):
+		try:
+			configuration.file_patterns = json.loads(configuration.file_patterns)
+		except:
+			sys.exit(Fore.RED + 'The configuration value for file_patterns needs to be valid JSON.' + Style.RESET_ALL)
+	else:
+		# Set the default patterns to watch
+		configuration.file_patterns = [ "*" ]
+
+	if hasattr(configuration, 'ignore_patterns'):
+		try:
+			configuration.ignore_patterns = json.loads(configuration.ignore_patterns)
+		except:
+			sys.exit(Fore.RED + 'The configuration value for ignore_patterns needs to be valid JSON.' + Style.RESET_ALL)
+	else:
+		# Set the default patterns to watch
+		configuration.ignore_patterns = [ '*.tmp', '*.TMP', '*/.git/*' ]
 
 	return configuration
 
 def get_connection (configuration):
 	# Start 
-	print '\033[93m' + 'LemonSync is initiating connection...' + '\033[93m'
+	print Back.YELLOW + Fore.BLACK + 'LemonSync is initiating connection...' + Style.RESET_ALL
 
 	# Establish a connection to the LemonStand API, and then to S3
 	c = Connector()
@@ -86,7 +106,7 @@ def start_watching (connection, configuration, utils):
 	observer.schedule(Listener(connection, configuration, utils), configuration.watch_dir, recursive=True)
 	observer.start()
 
-	print '\033[92m' + 'LemonSync is listening to changes on ' + configuration.watch_dir + '\033[92m'
+	print Back.GREEN + Fore.BLACK + 'LemonSync is listening to changes on ' + configuration.watch_dir + Style.RESET_ALL
 
 	try:
 		while True:
@@ -100,7 +120,7 @@ def start_watching (connection, configuration, utils):
 
 # Handle any command line arguments
 def parse_args ():
-	p = argparse.ArgumentParser(description='LemonSync v 0.1.6')
+	p = argparse.ArgumentParser(description='LemonSync v 0.1.8')
 	p.add_argument("-c", "--config", help="A configuration file must be present.", required=True)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
 	args = p.parse_args()
@@ -111,7 +131,11 @@ def parse_args ():
 	
 	return args
 
-def main (): 
+def main ():
+	# the call to init() will start filtering ANSI escape sequences out of any text sent to 
+	# stdout or stderr, and will replace them with equivalent Win32 calls.
+	init(autoreset=True)
+
 	args = parse_args()
 	configuration = get_configuration(args)
 	connection = get_connection(configuration)
