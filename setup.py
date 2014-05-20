@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="LemonSync",
-    version="0.1.7",
+    version="0.1.8",
     author='LemonStand',
     author_email='chris@lemonstand.com',
     download_url='https://github.com/lemonstand/LemonSync',
@@ -11,7 +11,9 @@ setup(
     install_requires=[
         "watchdog >= 0.7.1",
         "requests >= 2.2.1",
-        "boto >= 2.27.0"
+        "boto >= 2.27.0",
+        "colorama >= 0.3.1",
+        'pathtools >=0.1.1'
     ],
 	entry_points={
         'console_scripts': [
