@@ -8,7 +8,5 @@ python:
 
 install: "python setup.py install"
 
-script: nosetests
-
 notifications:
     email: false
