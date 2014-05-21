@@ -1,3 +1,31 @@
+# Copyright (c) 2014 LemonStand eCommerce Inc. https://lemonstand.com/
+# All rights reserved.
+#
+# This is free and unencumbered software released into the public domain.
+
+# Anyone is free to copy, modify, publish, use, compile, sell, or
+# distribute this software, either in source code form or as a compiled
+# binary, for any purpose, commercial or non-commercial, and by any
+# means.
+#
+# In jurisdictions that recognize copyright laws, the author or authors
+# of this software dedicate any and all copyright interest in the
+# software to the public domain. We make this dedication for the benefit
+# of the public at large and to the detriment of our heirs and
+# successors. We intend this dedication to be an overt act of
+# relinquishment in perpetuity of all present and future rights to this
+# software under copyright law.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# For more information, please refer to <http://unlicense.org/>
+
 import sys 
 import time
 import os 
@@ -62,7 +90,7 @@ class Utils ():
 
 			key = "/".join([self.connection["store"], "themes", self.connection["theme"], f])
 
-			# Split the path into the directoy and the filename
+			# Split the path into the directory and the filename
 			file_dir, file_name = os.path.split(path)
 
 			# Check to see if the file path exists, and create the needed 
@@ -72,17 +100,17 @@ class Utils ():
 
 			if not os.path.isdir(path):
 				# This will create the file if it does not exist
-				f = open(path, 'w+')
+				fi = open(path, 'w+')
 				k = self.connection["bucket"].new_key(key)
-				k.get_contents_to_file(f)
+				k.get_contents_to_file(fi)
 
-			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully downloaded ' + key + Style.RESET_ALL
+			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully downloaded ' + f + Style.RESET_ALL
 
 		return
 
 	# This will overwrite any contents in the remote theme with the contents of the watch_dir
 	def reset_remote (self):
-		print Back.RED + Fore.WHITE + 'Are you sure you want to permanlty overwrite your remote theme with the contents of ' + self.config.watch_dir + ' ?' + Style.RESET_ALL
+		print Back.RED + Fore.WHITE + 'Are you sure you want to permanently overwrite your remote theme with the contents of ' + self.config.watch_dir + ' ?' + Style.RESET_ALL
 		print Fore.RED + 'Type [Y] to overwrite your remote theme or [q] to quit. Any other key will result in no action being taken.' + Style.RESET_ALL
 
 		if version_info[0] > 2:
@@ -125,9 +153,9 @@ class Utils ():
 				k = self.connection["bucket"].new_key(keyname)
 				k.set_contents_from_filename(filename, headers=headers)
 				keynames.append(keypath)
-				print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + keyname + Style.RESET_ALL
+				print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + keypath + Style.RESET_ALL
 			except:
-				print Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + keyname + Style.RESET_ALL
+				print Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + keypath + Style.RESET_ALL
 
 		# Notify LS2 that the files have changed
 		try:
@@ -152,7 +180,7 @@ class Utils ():
 
 	def reset_local (self):
 
-		print Back.RED + Fore.WHITE + 'Are you sure you want to permanlty overwrite ' + self.config.watch_dir + ' with the remote theme folder?' + Style.RESET_ALL
+		print Back.RED + Fore.WHITE + 'Are you sure you want to permanently overwrite ' + self.config.watch_dir + ' with the remote theme folder?' + Style.RESET_ALL
 		print Fore.RED + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in no action being taken.' + Style.RESET_ALL
 
 		if version_info[0] > 2:
@@ -168,7 +196,7 @@ class Utils ():
 
 		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
 
-		# retreive the list of keys from the bucket
+		# retrieve the list of keys from the bucket
 		rs_keys = self.connection["bucket"].list(prefix=path)
 
 		new_files = []
@@ -194,7 +222,7 @@ class Utils ():
 				case_sensitive=True):
 				continue
 
-			# Just in case the user did not .git to their list of ignore
+			# Just in case the user did not add .git to their list of ignore
 			if the_file.startswith(".git"):
 				continue
 
@@ -222,7 +250,7 @@ class Utils ():
  		for files in changes:
 			print Fore.CYAN + ' --- ' + files + Style.RESET_ALL
 			
-		print Back.RED + Fore.WHITE + 'Version mismatch! Do you want to pull in changed files from your remote store?' + Style.RESET_ALL
+		print Back.RED + Fore.WHITE + 'The above remote files have changed! Do you want to merge these files locally?' + Style.RESET_ALL
 		print Fore.RED + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + Style.RESET_ALL
 
 		if version_info[0] > 2:

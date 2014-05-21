@@ -55,7 +55,7 @@ def get_configuration (args):
 		try:
 			configuration.file_patterns = json.loads(configuration.file_patterns)
 		except:
-			sys.exit(Fore.RED + 'The configuration value for file_patterns needs to be valid JSON.' + Style.RESET_ALL)
+			sys.exit(Fore.RED + 'The configuration value for file_patterns is malformed.' + Style.RESET_ALL)
 	else:
 		# Set the default patterns to watch
 		configuration.file_patterns = [ "*" ]
@@ -64,10 +64,10 @@ def get_configuration (args):
 		try:
 			configuration.ignore_patterns = json.loads(configuration.ignore_patterns)
 		except:
-			sys.exit(Fore.RED + 'The configuration value for ignore_patterns needs to be valid JSON.' + Style.RESET_ALL)
+			sys.exit(Fore.RED + 'The configuration value for ignore_patterns is malformed.' + Style.RESET_ALL)
 	else:
 		# Set the default patterns to watch
-		configuration.ignore_patterns = [ '*.tmp', '*.TMP', '*/.git/*' ]
+		configuration.ignore_patterns = [ "*.tmp", "*.TMP", "*/.git/*" ]
 
 	return configuration
 
@@ -75,7 +75,7 @@ def get_connection (configuration):
 	# Start 
 	print Back.YELLOW + Fore.BLACK + 'LemonSync is initiating connection...' + Style.RESET_ALL
 
-	# Establish a connection to the LemonStand API, and then to S3
+	# Establish a connection to the LemonStand API, and then to s3
 	c = Connector()
 	identity = c.get_identity(configuration.api_host, configuration.store_host, configuration.api_access)
 	connection = c.s3_connection(identity);
@@ -120,7 +120,7 @@ def start_watching (connection, configuration, utils):
 
 # Handle any command line arguments
 def parse_args ():
-	p = argparse.ArgumentParser(description='LemonSync v 0.1.8')
+	p = argparse.ArgumentParser(description='LemonSync v0.1.8')
 	p.add_argument("-c", "--config", help="A configuration file must be present.", required=True)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
 	args = p.parse_args()

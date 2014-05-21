@@ -45,14 +45,23 @@ If you do not have pip installed, you can install it from source:
     $ cd LemonSync
     $ python setup.py install   
 
-**There are some issues when compiling some of the needed dependencies with Xcode on Mac OSX.**
+**There are some issues when compiling some of the needed dependencies with Xcode 5.1 on Mac OS 10.9.**
 To fix this you can upgrade XCode command line tools to the latest version and install 
-lemonsync by passing some extra arguments
+LemonSync by passing some extra arguments.
 
 ::
 
     $ [sudo] ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future pip install lemonsync
 
+If installing from source you can pass in the extra command line arguments in the same way.
+
+::
+
+    $ git clone git://github.com/lemonstand/LemonSync.git
+    $ cd LemonSync
+    $ ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future python setup.py install   
+
+For more information on this clang issue, please see this `stack overflow`_ question, or this `watchdog`_ issue.
 
 Configuration
 -------------
@@ -75,10 +84,12 @@ generate a private API key for ``LemonSync``.
     [dir]
     watch_dir = /path/to/your/local/theme/
     file_patterns = [ "*" ]
-    ignore_patterns = [ '*.tmp', '*.TMP', '*/.git/*' ]
+    ignore_patterns = [ "*.tmp", "*.TMP", "*/.git/*" ]
 
     [store]
     store_host = YOUR_STORE.lemonstand.com  
+
+See the wiki for more configuration_ examples.
 
 Usage
 -----
@@ -90,14 +101,15 @@ To stop the program type ``Ctrl-C``.
 
     $ lemonsync --config=path/to/your/config.cfg   
 
-Version `0.1.6` instroduced two new command line arguments.
+If you need to reset your theme you can pass the `--reset` argument to `LemonSync`. There are two
+options for this argument, `local` and `remote`.
 
 ::
 
     $ lemonsync --config=path/to/your/config.cfg --reset=local   
 
 This will completely replace the contents of ``watch_dir`` set in ``path/to/your/config.cfg``
-with the contents of your remote theme. All files and folders except `.git*` will be removed.
+with the contents of your remote theme. All files and folders except `/.git*` will be removed.
 **This is an advanced feature and should be used with caution!**
 
 ::
@@ -164,9 +176,10 @@ ignored by your LemonStand store. See below for an example.
 TODO
 ----
 
--  When LemonSync starts, check if the theme has been modified somewhere else.
-   If it has, ask the user if they want to upload their local files, 
-   or pull the remote theme to their local version.
--  Make it easy for multiple developers to work on the same theme.
+- Make it easy for multiple developers to work on the same theme.
+- Add option to create theme from the command line.
 
 .. _pip: http://www.pip-installer.org/
+.. _configuration: https://github.com/lemonstand/LemonSync/wiki/Configuration
+.. _stack overflow: http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa#comment34219420_22322645
+.. _watchdog: https://github.com/gorakhargosh/watchdog/issues/224
