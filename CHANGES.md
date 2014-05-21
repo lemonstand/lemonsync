@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.9
+**May 21, 2014**
+
+- **Bug Fix** (minor): Access tokens were not being regenerated correctly after expiration.
+
 ##Version 0.1.8
 **May 20, 2014**
 
