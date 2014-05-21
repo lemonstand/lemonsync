@@ -1,6 +1,13 @@
 CHANGELOG
 =======
 
+##Version 0.1.8
+**May 20, 2014**
+
+- Better handling of terminal colors 
+- Send keynames to LS when updated, to record the modified stamp
+- Add cache control headers
+
 ##Version 0.1.7
 **May 17, 2014**
 
