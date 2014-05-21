@@ -73,7 +73,7 @@ def get_configuration (args):
 
 def get_connection (configuration):
 	# Start 
-	print Back.YELLOW + Fore.BLACK + 'LemonSync is initiating connection...' + Style.RESET_ALL
+	print(Back.YELLOW + Fore.BLACK + 'LemonSync is initiating connection...' + Style.RESET_ALL)
 
 	# Establish a connection to the LemonStand API, and then to s3
 	c = Connector()
@@ -106,7 +106,7 @@ def start_watching (connection, configuration, utils):
 	observer.schedule(Listener(connection, configuration, utils), configuration.watch_dir, recursive=True)
 	observer.start()
 
-	print Back.GREEN + Fore.BLACK + 'LemonSync is listening to changes on ' + configuration.watch_dir + Style.RESET_ALL
+	print(Back.GREEN + Fore.BLACK + 'LemonSync is listening to changes on ' + configuration.watch_dir + Style.RESET_ALL)
 
 	try:
 		while True:

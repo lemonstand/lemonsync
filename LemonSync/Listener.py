@@ -84,7 +84,7 @@ class Listener (PatternMatchingEventHandler):
 			if res.status_code != 200:
 				raise Exception()
 		except:
-			print Fore.RED + '[' + time.strftime("%c") + '] Failed to register file with LemonStand!' + Style.RESET_ALL
+			print(Fore.RED + '[' + time.strftime("%c") + '] Failed to register file with LemonStand!' + Style.RESET_ALL)
 
 	def remove (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
@@ -92,14 +92,14 @@ class Listener (PatternMatchingEventHandler):
 
 		try:
 			self.connection["bucket"].delete_key(key)
-			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully removed ' + path + Style.RESET_ALL
+			print(Fore.GREEN + '[' + time.strftime("%c") + '] Successfully removed ' + path + Style.RESET_ALL)
 		except:
 			if (self.reset > 0):
 				self.reset-=1
 				self.__checkConnection()
 				self.remove(event_path)
 			else:
-				print Fore.RED + '[' + time.strftime("%c") + '] Failed to remove ' + path + Style.RESET_ALL
+				print(Fore.RED + '[' + time.strftime("%c") + '] Failed to remove ' + path + Style.RESET_ALL)
 
 		self.__reset_retries()
 		# Register the file with LS
@@ -117,14 +117,14 @@ class Listener (PatternMatchingEventHandler):
 		try:
 			k = self.connection["bucket"].new_key(key)
 			k.set_contents_from_filename(event_path, headers=headers)
-			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + path + Style.RESET_ALL
+			print(Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + path + Style.RESET_ALL)
 		except:
 			if (self.reset > 0):
 				self.reset-=1
 				self.__checkConnection()
 				self.upsert(event_path)
 			else:
-				print Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + path + Style.RESET_ALL
+				print(Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + path + Style.RESET_ALL)
 
 		self.__reset_retries()
 		# Register the file with LS

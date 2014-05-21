@@ -104,14 +104,14 @@ class Utils ():
 				k = self.connection["bucket"].new_key(key)
 				k.get_contents_to_file(fi)
 
-			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully downloaded ' + f + Style.RESET_ALL
+			print(Fore.GREEN + '[' + time.strftime("%c") + '] Successfully downloaded ' + f + Style.RESET_ALL)
 
 		return
 
 	# This will overwrite any contents in the remote theme with the contents of the watch_dir
 	def reset_remote (self):
-		print Back.RED + Fore.WHITE + 'Are you sure you want to permanently overwrite your remote theme with the contents of ' + self.config.watch_dir + ' ?' + Style.RESET_ALL
-		print Fore.RED + 'Type [Y] to overwrite your remote theme or [q] to quit. Any other key will result in no action being taken.' + Style.RESET_ALL
+		print(Back.RED + Fore.WHITE + 'Are you sure you want to permanently overwrite your remote theme with the contents of ' + self.config.watch_dir + ' ?' + Style.RESET_ALL)
+		print(Fore.RED + 'Type [Y] to overwrite your remote theme or [q] to quit. Any other key will result in no action being taken.' + Style.RESET_ALL)
 
 		if version_info[0] > 2:
 			response = input(": ")
@@ -153,9 +153,9 @@ class Utils ():
 				k = self.connection["bucket"].new_key(keyname)
 				k.set_contents_from_filename(filename, headers=headers)
 				keynames.append(keypath)
-				print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + keypath + Style.RESET_ALL
+				print(Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + keypath + Style.RESET_ALL)
 			except:
-				print Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + keypath + Style.RESET_ALL
+				print(Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + keypath + Style.RESET_ALL)
 
 		# Notify LS2 that the files have changed
 		try:
@@ -175,13 +175,13 @@ class Utils ():
 			if res.status_code != 200:
 				raise Exception()
 		except:
-			print Fore.RED + '[' + time.strftime("%c") + '] Failed to register local files with LemonStand!' + Style.RESET_ALL
+			print(Fore.RED + '[' + time.strftime("%c") + '] Failed to register local files with LemonStand!' + Style.RESET_ALL)
 		return
 
 	def reset_local (self):
 
-		print Back.RED + Fore.WHITE + 'Are you sure you want to permanently overwrite ' + self.config.watch_dir + ' with the remote theme folder?' + Style.RESET_ALL
-		print Fore.RED + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in no action being taken.' + Style.RESET_ALL
+		print(Back.RED + Fore.WHITE + 'Are you sure you want to permanently overwrite ' + self.config.watch_dir + ' with the remote theme folder?' + Style.RESET_ALL)
+		print(Fore.RED + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in no action being taken.' + Style.RESET_ALL)
 
 		if version_info[0] > 2:
 			response = input(": ")
@@ -232,7 +232,7 @@ class Utils ():
 				elif os.path.isdir(file_path):
 					shutil.rmtree(file_path)
 			except Exception, e:
-				print e + Style.RESET_ALL
+				print(e + Style.RESET_ALL)
 		return
 
 	def remove_remote_files (self):
@@ -248,10 +248,10 @@ class Utils ():
 
 	def clean_changes (self, changes):
  		for files in changes:
-			print Fore.CYAN + ' --- ' + files + Style.RESET_ALL
+			print(Fore.CYAN + ' --- ' + files + Style.RESET_ALL)
 			
-		print Back.RED + Fore.WHITE + 'The above remote files have changed! Do you want to overwrite your local files?' + Style.RESET_ALL
-		print Fore.RED + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + Style.RESET_ALL
+		print(Back.RED + Fore.WHITE + 'The above remote files have changed! Do you want to overwrite your local files?' + Style.RESET_ALL)
+		print(Fore.RED + 'Type [Y] to overwrite your local files or [q] to quit. Any other key will result in your local files remaining the same.' + Style.RESET_ALL)
 
 		if version_info[0] > 2:
 			response = input(": ")
