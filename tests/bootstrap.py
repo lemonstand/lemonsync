@@ -12,7 +12,7 @@ def main ():
 	# Run the test suites
 	utils= unittest.TestLoader().loadTestsFromTestCase(TestUtils)
 	unittest.TestSuite([utils])
-	unittest.main(verbosity=2)
+	unittest.main()
 	
 if __name__ == '__main__':
 	main()
