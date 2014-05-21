@@ -37,7 +37,9 @@ from watchdog.events import PatternMatchingEventHandler
 from colorama import Fore, Back, Style
 
 class Listener (PatternMatchingEventHandler):
-		
+	# The number of times to retry a connection to LemonStand API
+	RETRIES = 2
+
 	def __init__ (self, connection, config, utils):
 		PatternMatchingEventHandler.patterns = config.file_patterns
 		PatternMatchingEventHandler.ignore_patterns = config.ignore_patterns
@@ -47,7 +49,7 @@ class Listener (PatternMatchingEventHandler):
 		self.connection = connection
 		self.config = config
 		self.utils = utils
-		self.retries = 1
+		self.reset = self.RETRIES
 
 	def __checkConnection (self):
 		# Get a new connection object to lemonstand API
@@ -58,17 +60,8 @@ class Listener (PatternMatchingEventHandler):
 
 		return
 
-	def __getPath (self, filepath):
-		# strip out the watch dir, from the modified path to get the relative folder in S3
-		path = filepath.replace(self.config.watch_dir, '')
-		return path
-
-	def __getKey (self, event_path):
-		path = self.__getPath(event_path)
-		# this will create the full s3 key
-		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path])
-
-		return key
+	def __reset_retries (self):
+		self.reset = self.RETRIES
 
 	def __register (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
@@ -101,13 +94,14 @@ class Listener (PatternMatchingEventHandler):
 			self.connection["bucket"].delete_key(key)
 			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully removed ' + path + Style.RESET_ALL
 		except:
-			if (self.retries > 0):
-				self.retries-=1
+			if (self.reset > 0):
+				self.reset-=1
 				self.__checkConnection()
 				self.remove(event_path)
 			else:
 				print Fore.RED + '[' + time.strftime("%c") + '] Failed to remove ' + path + Style.RESET_ALL
 
+		self.__reset_retries()
 		# Register the file with LS
 		self.__register(event_path)
 
@@ -125,13 +119,14 @@ class Listener (PatternMatchingEventHandler):
 			k.set_contents_from_filename(event_path, headers=headers)
 			print Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + path + Style.RESET_ALL
 		except:
-			if (self.retries > 0):
-				self.retries-=1
+			if (self.reset > 0):
+				self.reset-=1
 				self.__checkConnection()
 				self.upsert(event_path)
 			else:
 				print Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + path + Style.RESET_ALL
 
+		self.__reset_retries()
 		# Register the file with LS
 		self.__register(event_path)
 
