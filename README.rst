@@ -1,9 +1,9 @@
 LemonSync
 =========
 
-lemonsync 0.1.7
+lemonsync 0.1.8
 
-Released: 17-May-2014
+Released: 20-May-2014
 
 .. image:: https://pypip.in/download/LemonSync/badge.png
     :target: https://pypi.python.org/pypi//LemonSync/
