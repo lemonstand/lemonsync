@@ -247,7 +247,7 @@ class Utils ():
 		return
 
 	def clean_changes (self, changes):
- 		for files in changes:
+		for files in changes:
 			print(Fore.CYAN + ' --- ' + files + Style.RESET_ALL)
 
 		print(Back.RED + Fore.WHITE + 'The above remote files have changed! Do you want to overwrite your local files?' + Style.RESET_ALL)
