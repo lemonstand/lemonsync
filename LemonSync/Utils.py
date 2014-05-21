@@ -96,7 +96,7 @@ class Utils ():
 			# Check to see if the file path exists, and create the needed 
 			# directories if it does not
 			if not os.path.exists(file_dir):
-				os.makedirs(file_dir, 0755)
+				os.makedirs(file_dir, 0o755)
 
 			if not os.path.isdir(path):
 				# This will create the file if it does not exist
