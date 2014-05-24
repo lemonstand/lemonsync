@@ -5,8 +5,8 @@ lemonsync 0.1.9
 
 Released: 21-May-2014
 
-.. image:: https://travis-ci.org/lemonstand/LemonSync.png?branch=master
-        :target: https://travis-ci.org/lemonstand/LemonSync
+.. image:: https://travis-ci.org/lemonstand/lemonsync.png?branch=master
+        :target: https://travis-ci.org/lemonstand/lemonsync
 
 .. image:: https://pypip.in/download/LemonSync/badge.png
     :target: https://pypi.python.org/pypi//LemonSync/
