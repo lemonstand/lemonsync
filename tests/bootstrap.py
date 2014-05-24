@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-
-
 import unittest
 import sys
 from unit.test_utils import TestUtils

@@ -4,7 +4,7 @@ import os
 import argparse
 import shutil
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
-from LemonSync.LemonSync import *
+from lemonsync.LemonSync import *
 
 class TestUpload (unittest.TestCase):
 	directory = '/tmp/LemonSync/test'

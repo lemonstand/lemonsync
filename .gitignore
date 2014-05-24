@@ -3,9 +3,10 @@
 *.log
 *~
 __pycache__
-LemonSync.egg-info
+lemonsync.egg-info
 MANIFEST.in
 .DS_Store
 venv
 dist/
 config.cfg
+build/

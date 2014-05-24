@@ -1,15 +1,15 @@
 LemonSync
 =========
 
-lemonsync 0.1.9
+lemonsync 0.1.10
 
-Released: 21-May-2014
+Released: 24-May-2014
 
 .. image:: https://travis-ci.org/lemonstand/lemonsync.png?branch=master
         :target: https://travis-ci.org/lemonstand/lemonsync
 
-.. image:: https://pypip.in/download/LemonSync/badge.png
-    :target: https://pypi.python.org/pypi//LemonSync/
+.. image:: https://pypip.in/download/lemonsync/badge.png
+    :target: https://pypi.python.org/pypi//lemonsync/
     :alt: Downloads
 
 
@@ -49,10 +49,10 @@ TODO
 - Add option to create theme from the command line.
 
 .. _pip: http://www.pip-installer.org/
-.. _configuration: https://github.com/lemonstand/LemonSync/wiki/Configuration
-.. _installation: https://github.com/lemonstand/LemonSync/wiki/Installation
-.. _usage: https://github.com/lemonstand/LemonSync/wiki/Usage
+.. _configuration: https://github.com/lemonstand/lemonsync/wiki/Configuration
+.. _installation: https://github.com/lemonstand/lemonsync/wiki/Installation
+.. _usage: https://github.com/lemonstand/lemonsync/wiki/Usage
 .. _stack overflow: http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa#comment34219420_22322645
 .. _watchdog: https://github.com/gorakhargosh/watchdog/issues/224
-.. _wiki: https://github.com/lemonstand/LemonSync/wiki
-.. _get started: https://github.com/lemonstand/LemonSync/wiki/Usage#getting-started
+.. _wiki: https://github.com/lemonstand/lemonsync/wiki
+.. _get started: https://github.com/lemonstand/lemonsync/wiki/Usage#getting-started

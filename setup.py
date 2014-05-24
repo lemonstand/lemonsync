@@ -1,12 +1,13 @@
 from setuptools import setup
 
 setup(
-    name="LemonSync",
-    version="0.1.9",
+    name="lemonsync",
+    version="0.1.10",
     author='LemonStand',
     author_email='chris@lemonstand.com',
-    download_url='https://github.com/lemonstand/LemonSync',
-    packages=['LemonSync'],
+    url='http://pypi.python.org/lemonstand/lemonsync',
+    download_url='https://github.com/lemonstand/lemonsync',
+    packages=['lemonsync'],
     description='LemonSync will listen for changes in the folder you configure, and automatically push updates to your store theme.',
     install_requires=[
         "watchdog >= 0.7.1",
@@ -17,7 +18,7 @@ setup(
     ],
 	entry_points={
         'console_scripts': [
-            'lemonsync = LemonSync.LemonSync:main',
+            'lemonsync = lemonsync.LemonSync:main',
         ]
     },
 	license = "MIT",

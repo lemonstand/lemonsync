@@ -3,7 +3,7 @@ import sys
 import os
 import argparse
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
-from LemonSync.LemonSync import *
+from lemonsync.LemonSync import *
 
 class TestUtils (unittest.TestCase):
 

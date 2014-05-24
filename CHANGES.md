@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.10
+**May 24, 2014**
+
+- Standard naming convention
+
 ##Version 0.1.9
 **May 21, 2014**
 
