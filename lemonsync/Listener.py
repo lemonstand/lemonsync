@@ -65,8 +65,7 @@ class Listener (PatternMatchingEventHandler):
 
 	def __register (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
-		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path])
-		data = { 'key': key }
+		data = { 'key': path }
 
 		try:
 			# Update the resource with LemonStand
