@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.11
+**May 28, 2014**
+
+- Bug Fix: Caching issue with resources. 
+
 ##Version 0.1.10
 **May 24, 2014**
 
