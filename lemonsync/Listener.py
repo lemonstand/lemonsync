@@ -77,7 +77,8 @@ class Listener (PatternMatchingEventHandler):
 					'authorization': self.config.api_access
 				},
 				data=json.dumps(data), 
-				allow_redirects=False
+				allow_redirects=False,
+				verify=False
 			)			
 
 			if res.status_code != 200:
