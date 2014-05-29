@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.13
+**May 29, 2014**
+
+- Bug Fix: Files not being registered with LemonStand API
+
 ##Version 0.1.12
 **May 29, 2014**
 
