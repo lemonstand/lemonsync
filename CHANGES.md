@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.14
+**May 30, 2014**
+
+- Bug Fix: rename LemonSync to lemonsync
+
 ##Version 0.1.13
 **May 29, 2014**
 

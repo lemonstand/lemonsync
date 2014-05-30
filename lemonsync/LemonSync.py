@@ -120,7 +120,7 @@ def start_watching (connection, configuration, utils):
 
 # Handle any command line arguments
 def parse_args ():
-	p = argparse.ArgumentParser(description='LemonSync v0.1.13')
+	p = argparse.ArgumentParser(description='LemonSync v0.1.14')
 	p.add_argument("-c", "--config", help="A configuration file must be present.", required=True)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
 	args = p.parse_args()
