@@ -9,4 +9,5 @@ MANIFEST.in
 venv
 dist/
 config.cfg
+lemonsync.cfg
 build/
