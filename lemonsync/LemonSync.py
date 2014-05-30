@@ -106,7 +106,7 @@ def start_watching (connection, configuration, utils):
 	observer.schedule(Listener(connection, configuration, utils), configuration.watch_dir, recursive=True)
 	observer.start()
 
-	print(Back.GREEN + Fore.BLACK + 'LemonSync is listening to changes on ' + configuration.watch_dir + Style.RESET_ALL)
+	print(Back.GREEN + Fore.BLACK + 'LemonSync is listening to changes for ' + connection["theme"] + ' in ' + configuration.watch_dir + Style.RESET_ALL)
 
 	try:
 		while True:
@@ -120,10 +120,22 @@ def start_watching (connection, configuration, utils):
 
 # Handle any command line arguments
 def parse_args ():
+	config_required = True
+	config_file = os.getcwd() + "/lemonsync.cfg"
+
+	# Check to see if the default config file exists
+	if os.path.isfile(config_file):
+		config_required = False
+
+
 	p = argparse.ArgumentParser(description='LemonSync v0.1.14')
-	p.add_argument("-c", "--config", help="A configuration file must be present.", required=True)
+	p.add_argument("-c", "--config", help="A configuration file must be present.", required=config_required)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
 	args = p.parse_args()
+
+	# Add the default config to the args list
+	if not config_required:
+		args.config = config_file
 
 	# If the reset option was passed 
 	if args.reset and not args.reset in ("local", "remote"):
