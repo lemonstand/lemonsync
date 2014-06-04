@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="lemonsync",
-    version="0.1.14",
+    version="0.1.15",
     author='LemonStand',
     author_email='chris@lemonstand.com',
     url='http://pypi.python.org/lemonstand/lemonsync',
@@ -10,11 +10,11 @@ setup(
     packages=['lemonsync'],
     description='LemonSync will listen for changes in the folder you configure, and automatically push updates to your store theme.',
     install_requires=[
-        "watchdog >= 0.7.1",
-        "requests >= 2.2.1",
-        "boto >= 2.27.0",
-        "colorama >= 0.3.1",
-        'pathtools >=0.1.1'
+        "watchdog==0.7.1",
+        "requests==2.2.1",
+        "boto==2.27.0",
+        "colorama==0.3.1",
+        'pathtools==0.1.1'
     ],
 	entry_points={
         'console_scripts': [
