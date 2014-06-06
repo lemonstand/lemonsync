@@ -4,7 +4,7 @@ CHANGELOG
 ##Version 0.1.15
 **June 03, 2014**
 
-- Lock down dependecy version
+- Lock down dependency versions
 - Closes #9 (Assume config.cfg file exists locally)
 - Closes #8 (Report the theme being synced to)
 
