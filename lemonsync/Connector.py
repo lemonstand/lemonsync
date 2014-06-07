@@ -41,26 +41,28 @@ class Connector:
 	def __init__ (self):
 		self.connection = {}
 		self.identity = None
+		self.protocol = "http://"
 
 	# Handke the connection to the LemonStand API
-	def get_identity (self, api_host, store_host, api_access):
+	def get_identity (self, store_host, api_access):
 
 		# This is the API endpoint that will give us access to our s3 bucket in AWS
-		path = '/v2/identity/s3'
+		path = '/api/v2/identity/1'
 
 		# We need to give the API the store-host and the access token,
 		# which are both read in from the configuration file
 		headers = { 
-			'content-type': 'application/json',
-			'x-store-host': store_host, 
+			'Content-Type': 'application/json',
 			'authorization': api_access
 		}
 
 		try:
 			# The connection will fail if the configuation values are not set correctly.
-			r = requests.get(api_host + path, headers=headers, allow_redirects=False, verify=False)
+			r = requests.get(self.protocol + store_host + path, headers=headers, allow_redirects=False, verify=True)
 		except:
 			sys.exit(Fore.RED + "Could not make connection to LemonStand!" + Style.RESET_ALL)
+
+		print r.json()
 
 		if r.status_code != 200:
 			sys.exit(Fore.RED + 'Access token or store host is not valid!' + Style.RESET_ALL)
