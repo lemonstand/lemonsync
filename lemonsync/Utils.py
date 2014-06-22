@@ -49,16 +49,18 @@ class Utils ():
 		self.connection = connection
 		self.config = config
 
+	def __normalize_path (self, path):
+		return os.path.join(os.path.sep.join(path.split('/')))
+
 	def file_changes (self):
 		modified_files = []
-		# Windows compatible
 		path = "/".join([self.connection["store"], "themes", self.connection["theme"]])
 		rs_keys = self.connection["bucket"].list(prefix=path)
 
 		# Go though each file in s3 and compare it with the local file system
 		for key_val in rs_keys:
 			loc_path = key_val.name.replace(path+'/', '')
-			filepath = self.config.watch_dir + loc_path
+			filepath = os.path.join(self.config.watch_dir, self.__normalize_path(loc_path))
 
 			# Only remove files that are on the watch list
 			if not match_path(filepath,
@@ -67,11 +69,11 @@ class Utils ():
 				case_sensitive=True):
 				continue
 
-			if not os.path.isfile(self.config.watch_dir + loc_path):
+			if not os.path.isfile(filepath):
 				modified_files.append(loc_path)
 			else:
-				md5hash = hashlib.md5(open(self.config.watch_dir + loc_path).read()).hexdigest()
-				# The etag is quotes, so they need to be removed to compare
+				md5hash = hashlib.md5(open(filepath, 'rb').read()).hexdigest()
+				# The etag is quoted, so they need to be removed to compare
 				if not (md5hash == key_val.etag[1:-1]):
 					modified_files.append(loc_path)
 
@@ -88,7 +90,7 @@ class Utils ():
 				case_sensitive=True):
 				continue
 
-			key = "/".join([self.connection["store"], "themes", self.connection["theme"], f])
+			key = "/".join([self.connection["store"], "themes", self.connection["theme"], f.replace('\\', '/')])
 
 			# Split the path into the directory and the filename
 			file_dir, file_name = os.path.split(path)
@@ -100,7 +102,7 @@ class Utils ():
 
 			if not os.path.isdir(path):
 				# This will create the file if it does not exist
-				fi = open(path, 'w+')
+				fi = open(path, 'wb+')
 				k = self.connection["bucket"].new_key(key)
 				k.get_contents_to_file(fi)
 
@@ -134,7 +136,7 @@ class Utils ():
 		# Upload the new files
 		for filename in uploads:
 			keypath = filename.replace(self.config.watch_dir, '')
-			keyname = "/".join([self.connection["store"], "themes", self.connection["theme"], keypath])
+			keyname = "/".join([self.connection["store"], "themes", self.connection["theme"], keypath.replace('\\', '/')])
 
 			# Only remove files that are on the watch list
 			if not match_path(filename,
@@ -152,7 +154,7 @@ class Utils ():
 			try:
 				k = self.connection["bucket"].new_key(keyname)
 				k.set_contents_from_filename(filename, headers=headers)
-				keynames.append(keypath)
+				keynames.append(keypath.replace('\\', '/'))
 				print(Fore.GREEN + '[' + time.strftime("%c") + '] Successfully uploaded ' + keypath + Style.RESET_ALL)
 			except:
 				print(Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + keypath + Style.RESET_ALL)
@@ -169,8 +171,9 @@ class Utils ():
 					'authorization': self.config.api_access
 				},
 				data=json.dumps(data), 
-				allow_redirects=False
-			)			
+				allow_redirects=False,
+				verify=False
+			)
 
 			if res.status_code != 200:
 				raise Exception()
@@ -193,8 +196,7 @@ class Utils ():
 
 		# Prepare the directory
 		self.remove_local_files(self.config.watch_dir)
-
-		path = os.path.join(self.connection["store"], "themes", self.connection["theme"])
+		path = "/".join([self.connection["store"], "themes", self.connection["theme"]])
 
 		# retrieve the list of keys from the bucket
 		rs_keys = self.connection["bucket"].list(prefix=path)
@@ -232,7 +234,7 @@ class Utils ():
 				elif os.path.isdir(file_path):
 					shutil.rmtree(file_path)
 			except Exception as e:
-				print(e + Style.RESET_ALL)
+				print(e)
 		return
 
 	def remove_remote_files (self):
