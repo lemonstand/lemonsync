@@ -65,7 +65,7 @@ class Listener (PatternMatchingEventHandler):
 
 	def __register (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
-		data = { 'key': path }
+		data = { 'key': path.replace('\\', '/') }
 
 		try:
 			# Update the resource with LemonStand
@@ -88,7 +88,7 @@ class Listener (PatternMatchingEventHandler):
 
 	def remove (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
-		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path])
+		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path.replace('\\', '/')])
 
 		try:
 			self.connection["bucket"].delete_key(key)
@@ -107,7 +107,7 @@ class Listener (PatternMatchingEventHandler):
 
 	def upsert (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
-		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path])
+		key = "/".join([self.connection["store"], "themes", self.connection["theme"], path.replace('\\', '/')])
 		expires = int(time.time())
 		headers = {
 			'Cache-Control': "max-age=" + str(expires) + ", public",

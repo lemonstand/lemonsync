@@ -1,6 +1,12 @@
 CHANGELOG
 =======
 
+##Version 0.1.16
+**June 21, 2014**
+
+- **Bug Fix** (major): Windows file path seperators are now accounted for when uploading files to s3
+- **Bug Fix** (minor): Use binary mode when calculating md5 checksums of files to avoid incorrectly marking a file as changed 
+
 ##Version 0.1.15
 **June 03, 2014**
 

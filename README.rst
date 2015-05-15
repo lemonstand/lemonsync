@@ -1,9 +1,9 @@
 LemonSync
 =========
 
-lemonsync 0.1.15
+lemonsync 0.1.16
 
-Released: 03-June-2014
+Released: 21-June-2014
 
 .. image:: https://travis-ci.org/lemonstand/lemonsync.png?branch=master
         :target: https://travis-ci.org/lemonstand/lemonsync
