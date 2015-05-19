@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="lemonsync",
-    version="0.1.16",
+    version="0.1.17",
     author='LemonStand',
     author_email='chris@lemonstand.com',
     url='http://pypi.python.org/lemonstand/lemonsync',

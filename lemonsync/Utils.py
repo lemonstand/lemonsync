@@ -164,11 +164,10 @@ class Utils ():
 			data = { 'keys': keynames }
 			# Update the resource with LemonStand
 			res = requests.post(
-				self.config.api_host + '/v2/theme/reset', 
+				self.config.store_host + '/api/v2/resource/touch', 
 				headers = { 
-					'content-type': 'application/json',
-					'x-store-host': self.config.store_host, 
-					'authorization': self.config.api_access
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + self.config.api_access
 				},
 				data=json.dumps(data), 
 				allow_redirects=False,

@@ -41,24 +41,24 @@ class Connector:
 	def __init__ (self):
 		self.connection = {}
 		self.identity = None
+		self.protocol = "https://"
 
-	# Handke the connection to the LemonStand API
-	def get_identity (self, api_host, store_host, api_access):
+	# Handle the connection to the LemonStand API
+	def get_identity (self, api_host, api_access):
 
 		# This is the API endpoint that will give us access to our s3 bucket in AWS
-		path = '/v2/identity/s3'
+		path = '/api/v2/identity/s3'
 
 		# We need to give the API the store-host and the access token,
 		# which are both read in from the configuration file
 		headers = { 
-			'content-type': 'application/json',
-			'x-store-host': store_host, 
-			'authorization': api_access
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer ' + api_access
 		}
 
 		try:
-			# The connection will fail if the configuation values are not set correctly.
-			r = requests.get(api_host + path, headers=headers, allow_redirects=False, verify=False)
+			# The connection will fail if the configuation values are not set correctly
+			r = requests.post(api_host + path, headers=headers, allow_redirects=False, verify=True)
 		except:
 			sys.exit(Fore.RED + "Could not make connection to LemonStand!" + Style.RESET_ALL)
 
@@ -74,11 +74,11 @@ class Connector:
 		connection = {}
 
 		try:
-			connection["conn"] = boto.s3.connection.S3Connection(aws_access_key_id=identity['key'], aws_secret_access_key=identity['secret'], security_token=identity['token']) 
-			connection["bucket"] = connection["conn"].get_bucket(identity['bucket'], validate = False)
-			connection["store"] = identity['store']
-			connection["theme"] = identity['theme']
-			connection["bucket_name"] = identity['bucket']
+			connection["conn"] = boto.s3.connection.S3Connection(aws_access_key_id=identity['data']['key'], aws_secret_access_key=identity['data']['secret'], security_token=identity['data']['token']) 
+			connection["bucket"] = connection["conn"].get_bucket(identity['data']['bucket'], validate = False)
+			connection["store"] = identity['data']['store']
+			connection["theme"] = identity['data']['theme']
+			connection["bucket_name"] = identity['data']['bucket']
 		except:
 			sys.exit(Fore.RED + 'Could not make connection to s3!' + Style.RESET_ALL)
 

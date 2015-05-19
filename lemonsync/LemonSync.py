@@ -77,7 +77,7 @@ def get_connection (configuration):
 
 	# Establish a connection to the LemonStand API, and then to s3
 	c = Connector()
-	identity = c.get_identity(configuration.api_host, configuration.store_host, configuration.api_access)
+	identity = c.get_identity(configuration.api_host, configuration.api_access)
 	connection = c.s3_connection(identity);
 
 	return connection
@@ -127,8 +127,8 @@ def parse_args ():
 	if os.path.isfile(config_file):
 		config_required = False
 
-
 	p = argparse.ArgumentParser(description='LemonSync v0.1.16')
+
 	p.add_argument("-c", "--config", help="A configuration file must be present.", required=config_required)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
 	args = p.parse_args()

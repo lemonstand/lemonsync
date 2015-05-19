@@ -51,10 +51,10 @@ class Listener (PatternMatchingEventHandler):
 		self.utils = utils
 		self.reset = self.RETRIES
 
-	def __checkConnection (self):
+	def __check_connection (self):
 		# Get a new connection object to lemonstand API
 		c = Connector()
-		identity = c.get_identity(self.config.api_host, self.config.store_host, self.config.api_access)
+		identity = c.get_identity(self.config.api_host, self.config.api_access)
 		connection = c.s3_connection(identity);
 		self.connection = connection
 
@@ -65,21 +65,20 @@ class Listener (PatternMatchingEventHandler):
 
 	def __register (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
-		data = { 'key': path.replace('\\', '/') }
+		data = { 'keys': [path.replace('\\', '/')] }
 
 		try:
 			# Update the resource with LemonStand
 			res = requests.put(
-				self.config.api_host + '/v2/resource', 
+				self.config.api_host + '/api/v2/resource/touch', 
 				headers = { 
-					'content-type': 'application/json',
-					'x-store-host': self.config.store_host, 
-					'authorization': self.config.api_access
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + self.config.api_access
 				},
 				data=json.dumps(data), 
 				allow_redirects=False,
 				verify=False
-			)			
+			)
 
 			if res.status_code != 200:
 				raise Exception()
@@ -96,7 +95,7 @@ class Listener (PatternMatchingEventHandler):
 		except:
 			if (self.reset > 0):
 				self.reset-=1
-				self.__checkConnection()
+				self.__check_connection()
 				self.remove(event_path)
 			else:
 				print(Fore.RED + '[' + time.strftime("%c") + '] Failed to remove ' + path + Style.RESET_ALL)
@@ -121,7 +120,7 @@ class Listener (PatternMatchingEventHandler):
 		except:
 			if (self.reset > 0):
 				self.reset-=1
-				self.__checkConnection()
+				self.__check_connection()
 				self.upsert(event_path)
 			else:
 				print(Fore.RED + '[' + time.strftime("%c") + '] Failed to upload ' + path + Style.RESET_ALL)
