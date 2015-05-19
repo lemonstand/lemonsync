@@ -163,8 +163,8 @@ class Utils ():
 		try:
 			data = { 'keys': keynames }
 			# Update the resource with LemonStand
-			res = requests.post(
-				self.config.store_host + '/api/v2/resource/touch', 
+			res = requests.put(
+				self.config.api_host + '/api/v2/resource/touch', 
 				headers = { 
 					'Content-Type': 'application/json',
 					'Authorization': 'Bearer ' + self.config.api_access
