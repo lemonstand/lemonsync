@@ -1,7 +1,7 @@
 LemonSync
 =========
 
-lemonsync 0.0.17
+lemonsync 0.0.18
 
 Released: 19-May-2015
 

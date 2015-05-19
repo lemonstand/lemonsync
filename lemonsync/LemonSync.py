@@ -127,7 +127,7 @@ def parse_args ():
 	if os.path.isfile(config_file):
 		config_required = False
 
-	p = argparse.ArgumentParser(description='LemonSync v0.1.16')
+	p = argparse.ArgumentParser(description='LemonSync v0.1.18')
 
 	p.add_argument("-c", "--config", help="A configuration file must be present.", required=config_required)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)

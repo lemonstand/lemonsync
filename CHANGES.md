@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.18
+**June 21, 2014**
+
+- **Bug Fix** (minor) - Use `PUT` instead of `POST` for /resource/touch request
+
 ##Version 0.1.17
 **June 21, 2014**
 
