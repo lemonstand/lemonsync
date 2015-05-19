@@ -41,7 +41,7 @@ class Connector:
 	def __init__ (self):
 		self.connection = {}
 		self.identity = None
-		self.protocol = "http://"
+		self.protocol = "https://"
 
 	# Handle the connection to the LemonStand API
 	def get_identity (self, api_host, api_access):
@@ -58,7 +58,7 @@ class Connector:
 
 		try:
 			# The connection will fail if the configuation values are not set correctly
-			r = requests.post(self.protocol + api_host + path, headers=headers, allow_redirects=False, verify=True)
+			r = requests.post(api_host + path, headers=headers, allow_redirects=False, verify=True)
 		except:
 			sys.exit(Fore.RED + "Could not make connection to LemonStand!" + Style.RESET_ALL)
 
