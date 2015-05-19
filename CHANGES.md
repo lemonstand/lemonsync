@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.17
+**June 21, 2014**
+
+- Use "edit theme" instead of "active theme"
+
 ##Version 0.1.16
 **June 21, 2014**
 
