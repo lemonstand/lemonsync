@@ -54,7 +54,7 @@ class Listener (PatternMatchingEventHandler):
 	def __check_connection (self):
 		# Get a new connection object to lemonstand API
 		c = Connector()
-		identity = c.get_identity(self.config.store_host, self.config.api_access)
+		identity = c.get_identity(self.config.api_host, self.config.api_access)
 		connection = c.s3_connection(identity);
 		self.connection = connection
 
@@ -70,11 +70,10 @@ class Listener (PatternMatchingEventHandler):
 		try:
 			# Update the resource with LemonStand
 			res = requests.put(
-				self.config.store_host + '/api/v2/resource', 
+				self.config.api_host + '/api/v2/resource/touch', 
 				headers = { 
-					'content-type': 'application/json',
-					'x-store-host': self.config.store_host, 
-					'authorization': self.config.api_access
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + self.config.api_access
 				},
 				data=json.dumps(data), 
 				allow_redirects=False,
