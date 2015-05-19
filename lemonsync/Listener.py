@@ -65,7 +65,7 @@ class Listener (PatternMatchingEventHandler):
 
 	def __register (self, event_path):
 		path = event_path.replace(self.config.watch_dir, '')
-		data = { 'key': path.replace('\\', '/') }
+		data = { 'keys': [path.replace('\\', '/')] }
 
 		try:
 			# Update the resource with LemonStand
@@ -78,7 +78,7 @@ class Listener (PatternMatchingEventHandler):
 				data=json.dumps(data), 
 				allow_redirects=False,
 				verify=False
-			)			
+			)
 
 			if res.status_code != 200:
 				raise Exception()
