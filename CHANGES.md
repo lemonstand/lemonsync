@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.19
+**May 27, 2015**
+
+- Disable SSL verification. 
+
 ##Version 0.1.18
 **May 19, 2015**
 
