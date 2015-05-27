@@ -8,13 +8,9 @@ Released: 19-May-2015
 .. image:: https://travis-ci.org/lemonstand/lemonsync.png?branch=master
         :target: https://travis-ci.org/lemonstand/lemonsync
 
-.. image:: https://pypip.in/download/lemonsync/badge.png
-    :target: https://pypi.python.org/pypi//lemonsync/
-    :alt: Downloads
-
 
 **LemonSync** will listen for changes in the folder you configure, and
-automatically push updates to your store theme. This is helpful if you
+automatically push updates to your store "editing" theme. This is helpful if you
 want to add your theme under version control, or prefer to work locally
 rather than in the LemonStand UI.
 
