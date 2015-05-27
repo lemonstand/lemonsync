@@ -59,8 +59,7 @@ class Connector:
 		try:
 			# The connection will fail if the configuation values are not set correctly
 			r = requests.post(api_host + path, headers=headers, allow_redirects=False, verify=False)
-		except Exception, err:
-			print Exception, err
+		except:
 			sys.exit(Fore.RED + "Could not make connection to LemonStand!" + Style.RESET_ALL)
 
 		if r.status_code != 200:
