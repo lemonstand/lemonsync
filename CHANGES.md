@@ -2,12 +2,12 @@ CHANGELOG
 =======
 
 ##Version 0.1.18
-**May 19, 2014**
+**May 19, 2015**
 
 - **Bug Fix** (minor) - Use `PUT` instead of `POST` for /resource/touch request
 
 ##Version 0.1.17
-**May 19, 2014**
+**May 19, 2015**
 
 - Use "edit theme" instead of "active theme"
 
