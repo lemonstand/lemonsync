@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+##Version 0.1.20
+**January 25, 2016**
+
+- **Bug Fix** (minor) - Adds check for editing theme. 
+
 ##Version 0.1.19
 **May 27, 2015**
 

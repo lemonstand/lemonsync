@@ -82,4 +82,7 @@ class Connector:
 		except:
 			sys.exit(Fore.RED + 'Could not make connection to s3!' + Style.RESET_ALL)
 
+		if not connection["theme"]:
+			sys.exit(Fore.RED + 'Editing theme does not exist!' + Style.RESET_ALL)
+
 		return connection
