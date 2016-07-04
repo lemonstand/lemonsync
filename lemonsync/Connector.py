@@ -63,7 +63,7 @@ class Connector:
 			sys.exit(Fore.RED + "Could not make connection to LemonStand!" + Style.RESET_ALL)
 
 		if r.status_code != 200:
-			sys.exit(Fore.RED + 'Access token or store host is not valid!' + Style.RESET_ALL)
+			sys.exit(Fore.RED + "The server said that your API Access Token isn't valid. You should: \n- check that your Access Token is correct and not expired \n- verify that your store host configuration is correct" + Style.RESET_ALL)
 
 		response = r.json()
 
