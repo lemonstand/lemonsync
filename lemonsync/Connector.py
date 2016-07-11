@@ -26,13 +26,13 @@
 #
 # For more information, please refer to <http://unlicense.org/>
 
-import sys 
+import sys
 import time
-import os 
+import os
 import json
 import requests
-import boto.s3 
-import boto.s3.connection 
+import boto.s3
+import boto.s3.connection
 from boto.s3.key import Key
 from colorama import Fore, Back, Style
 
@@ -51,7 +51,7 @@ class Connector:
 
 		# We need to give the API the store-host and the access token,
 		# which are both read in from the configuration file
-		headers = { 
+		headers = {
 			'Content-Type': 'application/json',
 			'Authorization': 'Bearer ' + api_access
 		}
@@ -59,8 +59,8 @@ class Connector:
 		try:
 			# The connection will fail if the configuation values are not set correctly
 			r = requests.post(api_host + path, headers=headers, allow_redirects=False, verify=False)
-		except:
-			sys.exit(Fore.RED + "Could not make connection to LemonStand. Please verify that your store host configuration is correct." + Style.RESET_ALL)
+		except requests.exceptions.RequestException as e:
+			sys.exit(Fore.RED + "Could not make connection to LemonStand. Please verify that your store host configuration is correct." + Style.RESET_ALL + "\n\tDetail: " + str(e))
 
 		if r.status_code == 401:
 			sys.exit(Fore.RED + "The API Access Token isn't valid for "+api_host+". Please check that your Access Token is correct and not expired." + Style.RESET_ALL)
@@ -77,7 +77,7 @@ class Connector:
 		connection = {}
 
 		try:
-			connection["conn"] = boto.s3.connection.S3Connection(aws_access_key_id=identity['data']['key'], aws_secret_access_key=identity['data']['secret'], security_token=identity['data']['token']) 
+			connection["conn"] = boto.s3.connection.S3Connection(aws_access_key_id=identity['data']['key'], aws_secret_access_key=identity['data']['secret'], security_token=identity['data']['token'])
 			connection["bucket"] = connection["conn"].get_bucket(identity['data']['bucket'], validate = False)
 			connection["store"] = identity['data']['store']
 			connection["theme"] = identity['data']['theme']
