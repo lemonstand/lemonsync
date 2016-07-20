@@ -34,6 +34,8 @@ import boto.s3.connection
 import hashlib
 import shutil
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import json
 
 from sys import version_info

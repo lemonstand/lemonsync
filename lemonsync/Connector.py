@@ -31,6 +31,8 @@ import time
 import os
 import json
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import boto.s3
 import boto.s3.connection
 from boto.s3.key import Key
