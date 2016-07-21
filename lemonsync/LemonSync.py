@@ -128,9 +128,11 @@ def parse_args ():
 		config_required = False
 
 	# If there's a pyinstaller directory then this is a binary build
-	is_binary_build = ""
-	if os.path.isdir(os.getcwd() + "/pyinstaller/")
+	pyinstaller_dir = os.getcwd() + "/pyinstaller/"
+	if os.path.isdir(pyinstaller_dir):
 		is_binary_build = "-binary"
+	else:
+		is_binary_build = ""
 
 	p = argparse.ArgumentParser(description='LemonSync v0.1.21' + is_binary_build)
 
