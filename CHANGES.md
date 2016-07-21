@@ -1,6 +1,12 @@
 CHANGELOG
 =======
 
+##Version 0.1.21
+**July 21, 2016**
+
+- Make the connection error message more descriptive
+- Introduce an executable version for people having problems building from source
+
 ##Version 0.1.20
 **January 25, 2016**
 
