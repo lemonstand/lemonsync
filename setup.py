@@ -10,11 +10,11 @@ setup(
     packages=['lemonsync'],
     description='LemonSync will listen for changes in the folder you configure, and automatically push updates to your store theme.',
     install_requires=[
-        "watchdog==0.7.1",
+        "watchdog",
         "requests",
-        "boto==2.27.0",
-        "colorama==0.3.1",
-        'pathtools==0.1.1'
+        "boto",
+        "colorama",
+        "pathtools"
     ],
 	entry_points={
         'console_scripts': [
