@@ -1,4 +1,4 @@
-requests==2.2.1
+requests
 boto==2.27.0
 watchdog==0.7.1
 colorama==0.3.1
