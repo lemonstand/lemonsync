@@ -40,6 +40,6 @@ deactivate
 
 mv runner lemonsync
 
-# Uninstall the version of Python installed by Homebrew (optional)
+# Uninstall the version of Python installed by Homebrew in the first step (optional)
 
 brew uninstall python
