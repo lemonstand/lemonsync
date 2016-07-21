@@ -127,14 +127,7 @@ def parse_args ():
 	if os.path.isfile(config_file):
 		config_required = False
 
-	# If there's a pyinstaller directory then this is a binary build
-	pyinstaller_dir = os.getcwd() + "/pyinstaller/"
-	if os.path.isdir(pyinstaller_dir):
-		is_binary_build = "-binary"
-	else:
-		is_binary_build = ""
-
-	p = argparse.ArgumentParser(description='LemonSync v0.1.21' + is_binary_build)
+	p = argparse.ArgumentParser(description='LemonSync v0.1.21')
 
 	p.add_argument("-c", "--config", help="A configuration file must be present.", required=config_required)
 	p.add_argument("-r", "--reset", help="Options for this argument are [local|remote].", required=False)
