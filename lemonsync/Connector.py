@@ -26,6 +26,7 @@
 #
 # For more information, please refer to <http://unlicense.org/>
 
+import ssl
 import sys
 import time
 import os
@@ -58,11 +59,16 @@ class Connector:
 			'Authorization': 'Bearer ' + api_access
 		}
 
+		sslVERSION = ssl.OPENSSL_VERSION
+
 		try:
 			# The connection will fail if the configuation values are not set correctly
 			r = requests.post(api_host + path, headers=headers, allow_redirects=False, verify=False)
 		except requests.exceptions.RequestException as e:
-			sys.exit(Fore.RED + "Could not make connection to LemonStand. Please verify that your store host configuration is correct." + Style.RESET_ALL + "\n\tDetail: " + str(e))
+			sys.exit(Fore.RED + "Could not make connection to LemonStand. Please verify that your store host configuration is correct."
+				+ Fore.RED + "\nYour Python OpenSSL version: " + Fore.GREEN + sslVERSION
+				+ Fore.RED + "\nPlease see https://github.com/lemonstand/lemonsync/wiki/Upgrading-Python if your version is < 1.0.2h"
+				+ Style.RESET_ALL + "\n\tDetail: " + str(e))
 
 		if r.status_code == 401:
 			sys.exit(Fore.RED + "The API Access Token isn't valid for "+api_host+". Please check that your Access Token is correct and not expired." + Style.RESET_ALL)
