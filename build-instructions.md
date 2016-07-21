@@ -30,15 +30,21 @@ pip install requests boto watchdog colorama
 
 sudo rm -rf build dist
 
-# Will create a binary in dist/
+# Add -binary to the version string
+
+sed -i '' 's/LemonSync v0.1.21/LemonSync v0.1.21-binary/' lemonsync/LemonSync.py
+
+# Will create the binary in dist/
 
 sudo pyinstaller runner --onefile
 
-deactivate
-
 # Rename the built binary
 
-mv runner lemonsync
+mv dist/runner dist/lemonsync
+
+# Deactivate the virtualenv
+
+deactivate
 
 # Optional: uninstall the version of Python installed by Homebrew in the first step
 
