@@ -14,7 +14,7 @@ cd lemonsync
 
 source bin/activate
 
-# Install pyInstaller (dev)
+# Install the dev version of pyInstaller
 
 git clone https://github.com/pyinstaller/pyinstaller.git
 
@@ -40,6 +40,6 @@ deactivate
 
 mv runner lemonsync
 
-# Uninstall the version of Python installed by Homebrew in the first step (optional)
+# Optional: uninstall the version of Python installed by Homebrew in the first step
 
 brew uninstall python
