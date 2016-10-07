@@ -62,6 +62,10 @@ class Utils ():
 		# Go though each file in s3 and compare it with the local file system
 		for key_val in rs_keys:
 			loc_path = key_val.name.replace(path+'/', '')
+			# Fix for stores with multiple themes
+			if (loc_path == key_val.name):
+				continue
+
 			filepath = os.path.join(self.config.watch_dir, self.__normalize_path(loc_path))
 
 			# Only remove files that are on the watch list
@@ -206,6 +210,9 @@ class Utils ():
 
 		for key_val in rs_keys:
 			loc_path = key_val.name.replace(path+'/', '')
+			# Fix for stores with multiple themes
+			if (loc_path == key_val.name):
+				continue
 			new_files.append(loc_path)
 
 		self.sync(new_files)
@@ -245,6 +252,10 @@ class Utils ():
 
 		# rest the remote theme
 		for key in keys:
+			loc_path = key.name.replace(path+'/', '')
+			# Fix for stores with multiple themes
+			if (loc_path == key.name):
+				continue
 			key.delete()
 
 		return
