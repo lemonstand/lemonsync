@@ -1,28 +1,35 @@
-Installation
-=========
+## Installation
 
-We **highly** recommend using `virtualenv` to install lemonsync.
+_LemonSync is a command-line python application. We recommend using [VirtualEnv](https://virtualenv.pypa.io/en/stable/) in combination with [pip](https://pip.pypa.io/en/stable/)._
 
-You must have python 2.7.x or higher for ``LemonSync`` to work. If you 
-have `pip`_ already installed on your system you can run the following
-command to install `LemonSync`:
+### Install Dependencies
+  * Install [pip](https://pip.pypa.io/en/stable/installing/)
+  * Install [VirtualEnv](https://virtualenv.pypa.io/en/stable/installation/)
 
+### Setup Environment
+* Open a terminal/cmd instance
+* Change directories to where you will keep your project(s)
+* Create a python Virtual Environment:
+  ```
+  $ virtualenv lemonstand_projects
+  ```
+  - `lemonstand_projects` can be any name;
+  - `lemonstand_projects` will be a folder, containing several subfolders which will contain a unique python instance.
+
+### Install `LemonSync`
 ```
-    $ [sudo] pip install lemonsync   
+$ /path/to/lemonstand_projects/bin/pip install lemonsync
+```
+Activate the `lemonstand_projects` environment:
+```
+$ cd ./lemonstand_projects/bin/source activate
+```
+Test LemonSync is installed:
+```
+$ lemonsync
+usage: lemonsync [-h] -c CONFIG [-r RESET]
 ```
 
-If you do not have pip installed, you can install it from source:  
+If you see the `usage` message, your environment has been correctly installed and you are ready to configure LemonSync.
 
-```
-    $ git clone git://github.com/lemonstand/LemonSync.git
-    $ cd LemonSync
-    $ python setup.py install   
-```
-
-**There are some issues when compiling some of the needed dependencies with Xcode on Mac OSX.**
-To fix this you can upgrade XCode command line tools to the latest version and install 
-lemonsync by passing some extra arguments
-
-```
-    $ [sudo] ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future pip install lemonsync
-```
+From here you are ready to [Configure Your Environment](Configuration) or return [Home](Home).
