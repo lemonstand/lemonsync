@@ -11,3 +11,4 @@ dist/
 config.cfg
 lemonsync.cfg
 build/
+bin/
