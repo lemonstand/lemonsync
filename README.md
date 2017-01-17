@@ -13,6 +13,9 @@ There are several ways to install LemonSync. If you have pip install, the easies
 
 If these options are not available to you, you can visit the [Installation Page](https://github.com/lemonstand/lemonsync/blob/master/docs/installation.md) or [Install the Executable](https://github.com/lemonstand/lemonsync/wiki/Prebuilt-executable).
 
+**NOTE:** If on OSX, installing with the default python installation may cause issues. If you see the error message `Could not make connection to LemonStand!
+` try reinstalling `lemonsync` using the `pip` easy-install method.  
+
 ### Configuration
 
 Once installed, create a file called `lemonstand.cfg`. Copy the following into that file:
