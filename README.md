@@ -4,7 +4,7 @@ _LemonSync allows local editing to be easily previewed on your store. Changes ma
 
 # Quickstart
 
-_This guide will help you get lemonsync up and running as quickly as possible. For more detailed instructions, see the [Installation](Installation), [Configuration](Configuration), or [Usage](Usage) links._
+_This guide will help you get lemonsync up and running as quickly as possible. For more detailed instructions, see the [Installation](https://github.com/lemonstand/lemonsync/wiki/Installation), [Configuration](https://github.com/lemonstand/lemonsync/wiki/Configuration), or [Usage](https://github.com/lemonstand/lemonsync/wiki/Usage) links._
 
 ### Installation
 There are several ways to install LemonSync. If you have pip install, the easiest way is to simply:
