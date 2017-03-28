@@ -78,7 +78,7 @@ def get_connection (configuration):
 	# Establish a connection to the LemonStand API, and then to s3
 	c = Connector()
 	identity = c.get_identity(configuration.api_host, configuration.api_access)
-	connection = c.s3_connection(identity);
+	connection = c.s3_connection(identity, configuration.user_id);
 
 	return connection
 

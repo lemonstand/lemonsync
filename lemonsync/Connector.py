@@ -81,14 +81,18 @@ class Connector:
 		return response
 
 	# Handles the connection to s3
-	def s3_connection (self, identity):
+	def s3_connection (self, identity, user_id):
 		connection = {}
+
+		for theme_info in identity['data']['themes']:
+			if theme_info['user_id'] == int(user_id):
+				theme = theme_info['value']
 
 		try:
 			connection["conn"] = boto.s3.connection.S3Connection(aws_access_key_id=identity['data']['key'], aws_secret_access_key=identity['data']['secret'], security_token=identity['data']['token'])
 			connection["bucket"] = connection["conn"].get_bucket(identity['data']['bucket'], validate = False)
 			connection["store"] = identity['data']['store']
-			connection["theme"] = identity['data']['theme']
+			connection["theme"] = theme
 			connection["bucket_name"] = identity['data']['bucket']
 		except:
 			sys.exit(Fore.RED + 'Could not make connection to s3!' + Style.RESET_ALL)

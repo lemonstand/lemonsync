@@ -31,7 +31,7 @@ import getopt
 from ConfigParser import SafeConfigParser
 from colorama import Fore, Back, Style
 
-sections = 'api', 'dir', 'store'
+sections = 'api', 'dir', 'store', 'user'
 
 class Parser (object):
 	def __init__(self, *file):
