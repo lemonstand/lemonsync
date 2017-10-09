@@ -1,5 +1,0 @@
-requests
-boto
-watchdog
-colorama
-pathtools
